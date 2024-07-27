@@ -1,5 +1,8 @@
-import Home from '@/pages/home';
+
 import { createBrowserRouter } from 'react-router-dom';
+import Employees from '@/pages/employees/employees';
+import Home from '@/pages/home';
+import ViewEmployee from '@/pages/employees/viewEmployee';
 
 const Router = createBrowserRouter([
   {
@@ -7,8 +10,12 @@ const Router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: 'about',
-    element: <div>About</div>,
+    path: 'employees',
+    element: <Employees />,
   },
-]);
+  {
+    path: 'view-employee',
+    element: <ViewEmployee />,
+  },
+]); 
 export default Router;
