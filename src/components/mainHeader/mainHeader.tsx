@@ -29,7 +29,7 @@ export const Header = () => {
         {/* End Logo Header */}
       </div>
       {/* Navbar Header */}
-      <nav className="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+      <nav style={{ backgroundColor: '#07283b' }} className="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
         <div className="container-fluid">
           <ul className="navbar-nav topbar-nav ms-md-auto align-items-center">
             <li className="nav-item topbar-user dropdown hidden-caret">
@@ -47,8 +47,8 @@ export const Header = () => {
                   />
                 </div>
                 <span className="profile-username">
-                  <span className="op-7">Hi,</span>
-                  <span className="fw-bold">Admin</span>
+                  <span className="op-7 text-white">Hi,</span>
+                  <span className="fw-bold text-white">Admin</span>
                 </span>
               </a>
               <ul className="dropdown-menu dropdown-user animated fadeIn">

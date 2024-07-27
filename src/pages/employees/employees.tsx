@@ -10,7 +10,6 @@ export const Employees = () => {
         <Header />
         <div className="container">
           <div className="page-inner">
-            <div className="row"></div>
             <div className="row">
               <div className="col-md-12">
                 <div className="card">
@@ -32,15 +31,13 @@ export const Employees = () => {
                     <div
                       className="modal fade"
                       id="addRowModal"
-                      role="dialog"
                       aria-hidden="true"
                     >
                       <div className="modal-dialog" role="document">
                         <div className="modal-content">
                           <div className="modal-header border-0">
                             <h5 className="modal-title">
-                              <span className="fw-mediumbold"> New</span>
-                              <span className="fw-light"> Row </span>
+                              <span className="text-xl"> New Employee</span>
                             </h5>
                             <button
                               type="button"
@@ -52,12 +49,15 @@ export const Employees = () => {
                             </button>
                           </div>
                           <div className="modal-body">
-                            <p className="small">
-                              Create a new row using this form, make sure you
-                              fill them all
-                            </p>
+                            <p className="small">Fill the employee details</p>
                             <form>
                               <div className="row">
+                                <div className="col-sm-12">
+                                  <div className="form-group form-group-default">
+                                    <label>Employee image</label> <br />
+                                    <input type="file" />
+                                  </div>
+                                </div>
                                 <div className="col-sm-12">
                                   <div className="form-group form-group-default">
                                     <label>Name</label>
@@ -69,39 +69,58 @@ export const Employees = () => {
                                     />
                                   </div>
                                 </div>
-                                <div className="col-md-6 pe-0">
+                                <div className="col-sm-12">
                                   <div className="form-group form-group-default">
-                                    <label>Position</label>
+                                    <label>Email</label>
                                     <input
-                                      id="addPosition"
-                                      type="text"
+                                      id="addEmail"
+                                      type="email"
                                       className="form-control"
-                                      placeholder="fill position"
+                                      placeholder="fill email"
                                     />
                                   </div>
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-sm-12">
                                   <div className="form-group form-group-default">
-                                    <label>Office</label>
+                                    <label>Phone </label>
                                     <input
-                                      id="addOffice"
+                                      id="addPhone"
+                                      type="tel"
+                                      className="form-control"
+                                      placeholder="fill phone"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-sm-12">
+                                  <div className="form-group form-group-default ">
+                                    <label>Adress </label>
+                                    <input
+                                      id="addAdress"
                                       type="text"
                                       className="form-control"
-                                      placeholder="fill office"
+                                      placeholder="fill Adress"
                                     />
                                   </div>
                                 </div>
                               </div>
                             </form>
                           </div>
-                          {/* <div className="modal-footer border-0">
-                          <button type="button" id="addRowButton" className="btn btn-primary">
-                            Add
-                          </button>
-                          <button type="button" className="btn btn-danger" data-dismiss="modal">
-                            Close
-                          </button>
-                        </div> */}
+                          <div className="modal-footer border-0">
+                            <button
+                              type="button"
+                              id="addRowButton"
+                              className="btn btn-primary"
+                            >
+                              Add
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-danger"
+                              data-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -119,7 +138,7 @@ export const Employees = () => {
                             <th style={{ width: '10%' }}>Action</th>
                           </tr>
                         </thead>
-                       
+
                         <tbody>
                           <tr>
                             <td>123</td>
@@ -352,7 +371,6 @@ export const Employees = () => {
                               </div>
                             </td>
                           </tr>
-                          
                         </tbody>
                       </table>
                     </div>

@@ -1,6 +1,5 @@
 import Header from '@/components/mainHeader/mainHeader';
 import Navbar from '@/components/navbar/navbar';
-import './viewEmployee.scss'
 
 export const viewEmployee = () => {
   return (
@@ -9,31 +8,23 @@ export const viewEmployee = () => {
       <div className="main-panel">
         <Header />
         <div className="container">
-          <div className="profile-pic">
-            <label className="-label" htmlFor="file">
-              <span className="glyphicon glyphicon-camera"></span>
-              <span>Change Image</span>
-            </label>
-            <input id="file" type="file"  />
-            <img
-              src="https://cdn.pixabay.com/photo/2017/08/06/21/01/louvre-2596278_960_720.jpg"
-              id="output"
-              width="200"
-            />
-          </div>
-          <div className="profile mt-4 flex flex-col justify-center items-center">
-            <strong className="font-Manrope text-2xl">
-              Name : Samuel john
-            </strong>
-            <strong className="font-Manrope text-2xl">
-              Phone : +91 9999999999
-            </strong>
-            <strong className="font-Manrope text-2xl">
-              Email : Samueljohn999@abc.com
-            </strong>
-            <strong className="font-Manrope text-2xl">
-              Admissions Clossed : 50
-            </strong>
+          <div className="p-20 h-screen w-screen bg-orange-200">
+            <h3 className="text-orange-400 font-bold mb-4">
+              3. Horizontal &amp; Responsive Card
+            </h3>
+            <div className="bg-white rounded-lg shadow-2xl md:flex">
+              <img
+                src="https://images.unsplash.com/photo-1593642532744-d377ab507dc8"
+                alt="Laptop on Desk"
+                className="md:w-1/3 rounded-t-lg md:rounded-l-lg md:rounded-t-none"
+              />
+              <div className="p-6">
+                <h2 className="font-bold text-xl md:text-3xl mb-2 text-orange-700">
+                  Horizontal Card
+                </h2>
+                <p className="text-orange-700">Look at me go sideways!</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
