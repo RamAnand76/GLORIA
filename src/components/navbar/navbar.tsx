@@ -1,70 +1,35 @@
+import GetIcons from '@/assets/icons';
+import { navItems } from '@/utils/constants';
+import { Link } from '@nextui-org/react';
 import React from 'react';
-
-export const Navbar = () => {
-  return (
-    <div>
-      {/* Sidebar */}
-      <div className="sidebar" style={{ backgroundColor: "#07283b" }}>
-        <div className="sidebar-logo">
-          {/* Logo Header */}
-          <div className="logo-header" style={{ backgroundColor: "#07283b" }}>
-            <a href="index.html" className="logo">
-              <img src="assets/img/kaiadmin/LOGO.jpg" alt="navbar brand" className="navbar-brand" height="70" />
-            </a>
-            <div className="nav-toggle">
-              {/* <button className="btn btn-toggle toggle-sidebar">
-                <i className="gg-menu-right"></i>
-              </button> */}
-              <button className="btn btn-toggle sidenav-toggler">
-                <i className="gg-menu-left"></i>
-              </button>
-            </div>
-            <button className="topbar-toggler more">
-              <i className="gg-more-vertical-alt"></i>
-            </button>
-          </div>
-          {/* End Logo Header */}
-        </div>
-        <div className="sidebar-wrapper scrollbar scrollbar-inner">
-          <div className="sidebar-content">
-            <ul className="nav nav-secondary">
-              <li className="nav-item active">
-                <a href="#" aria-expanded="false">
-                  <i className="fas fa-home"></i>
-                  <p>Dashboard</p>
-                </a>
-              </li>
-              <li className="nav-item ">
-                <a href="#base">
-                  <i className="fas fa-user"></i>
-                  <p className='nav-employee'>Employees</p>
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#sidebarLayouts">
-                  <i className="fas fa-graduation-cap"></i>
-                  <p>Students</p>
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#forms">
-                  <i className="fas fa-pen-square"></i>
-                  <p>Reports</p>
-                  <span className="badge badge-danger">4</span>
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#tables">
-                  <i className="fas fa-school"></i>
-                  <p>Colleges & Courses</p>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      {/* End Sidebar */}
+export const Navbar: React.FC<{
+  showNav: boolean;
+  toggleNav: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ showNav, toggleNav }) => (
+  <aside
+    className={`fixed ${!showNav && '-ml-64'} lg:ml-0 sidebar inset-y-0 left-0 bg-primary text-white w-64`}
+  >
+    <div className="flex items-center justify-between py-1 px-3">
+      <img src="assets/img/kaiadmin/LOGO.jpg" alt="Logo" className="h-[70px]" />
+      <button
+        type="button"
+        className="lg:hidden"
+        onClick={() => toggleNav((cv) => !cv)}
+      >
+        {GetIcons('close')}
+      </button>
     </div>
-  );
-}
-export default Navbar
+    <nav className="flex flex-col gap-2 py-8 px-6 space-y-2 text-white">
+      {navItems.map((item, index: number) => (
+        <Link
+          href={`/${item}`}
+          className="flex gap-4 items-center text-[#e2e8ee] capitalize"
+          key={index}
+        >
+          {GetIcons(item)} <span>{item}</span>
+        </Link>
+      ))}
+    </nav>
+  </aside>
+);
+export default Navbar;

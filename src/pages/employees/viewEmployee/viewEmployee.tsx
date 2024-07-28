@@ -1,6 +1,6 @@
-import Header from '@/components/mainHeader/mainHeader';
+import Header from '@/components/header/header';
 import Navbar from '@/components/navbar/navbar';
-import './viewEmployee.scss'
+import './viewEmployee.scss';
 
 export const viewEmployee = () => {
   return (
@@ -14,7 +14,7 @@ export const viewEmployee = () => {
               <span className="glyphicon glyphicon-camera"></span>
               <span>Change Image</span>
             </label>
-            <input id="file" type="file"  />
+            <input id="file" type="file" />
             <img
               src="https://cdn.pixabay.com/photo/2017/08/06/21/01/louvre-2596278_960_720.jpg"
               id="output"
