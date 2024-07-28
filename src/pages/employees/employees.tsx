@@ -1,4 +1,3 @@
-import Button from '@/components/button/button';
 import Header from '@/components/mainHeader/mainHeader';
 import Navbar from '@/components/navbar';
 import { Link } from 'react-router-dom';
