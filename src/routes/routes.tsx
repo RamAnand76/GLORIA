@@ -14,7 +14,7 @@ const Router = createBrowserRouter([
     element: <Employees />,
   },
   {
-    path: 'view-employee',
+    path: 'view-profile',
     element: <ViewEmployee />,
   },
 ]); 

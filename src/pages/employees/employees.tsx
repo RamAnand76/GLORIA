@@ -1,6 +1,7 @@
 import Button from '@/components/button/button';
 import Header from '@/components/mainHeader/mainHeader';
 import Navbar from '@/components/navbar';
+import { Link } from 'react-router-dom';
 
 export const Employees = () => {
   return (
@@ -148,7 +149,7 @@ export const Employees = () => {
                               Someone
                             </td>
                             <td>
-                              <Button label="View Profile" />
+                              <Link className="text-white btn btn-primary" to="/view-profile">View Profile</Link>
                             </td>
                             <td>
                               <div className="form-button-action">
@@ -181,7 +182,7 @@ export const Employees = () => {
                               Someone
                             </td>
                             <td>
-                              <Button label="View Profile" />
+                            <Link className="text-white btn btn-primary" to="/view-profile">View Profile</Link>
                             </td>
                             <td>
                               <div className="form-button-action">
@@ -214,7 +215,7 @@ export const Employees = () => {
                               Someone
                             </td>
                             <td>
-                              <Button label="View Profile" />
+                            <Link className="text-white btn btn-primary" to="/view-profile">View Profile</Link>
                             </td>
                             <td>
                               <div className="form-button-action">
@@ -247,7 +248,7 @@ export const Employees = () => {
                               Someone
                             </td>
                             <td>
-                              <Button label="View Profile" />
+                            <Link className="text-white btn btn-primary" to="/view-profile">View Profile</Link>
                             </td>
                             <td>
                               <div className="form-button-action">
@@ -280,7 +281,7 @@ export const Employees = () => {
                               Someone
                             </td>
                             <td>
-                              <Button label="View Profile" />
+                            <Link className="text-white btn btn-primary" to="/view-profile">View Profile</Link>
                             </td>
                             <td>
                               <div className="form-button-action">
@@ -313,7 +314,7 @@ export const Employees = () => {
                               Someone
                             </td>
                             <td>
-                              <Button label="View Profile" />
+                            <Link className="text-white btn btn-primary" to="/view-profile">View Profile</Link>
                             </td>
                             <td>
                               <div className="form-button-action">
@@ -346,7 +347,7 @@ export const Employees = () => {
                               Someone
                             </td>
                             <td>
-                              <Button label="View Profile" />
+                            <Link className="text-white btn btn-primary" to="/view-profile">View Profile</Link>
                             </td>
                             <td>
                               <div className="form-button-action">
