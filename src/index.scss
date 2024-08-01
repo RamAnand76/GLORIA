@@ -12,7 +12,6 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-
 body {
   box-sizing: border-box;
   margin: 0;
@@ -26,16 +25,16 @@ body {
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #dbdfe0;
 
-  #root{
-height: 100%;
-width: 100%
+  #root {
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    color: black;
+    @media screen {
+    }
   }
 }
 @keyframes fadeInAnimation {
@@ -48,7 +47,11 @@ width: 100%
   }
 }
 
-.sidebar{
+.sidebar {
   direction: ltr;
-  transition: margin-left .35s ease-in-out, left .35s ease-in-out, margin-right .35s ease-in-out, right .35s ease-in-out;
+  transition:
+    margin-left 0.35s ease-in-out,
+    left 0.35s ease-in-out,
+    margin-right 0.35s ease-in-out,
+    right 0.35s ease-in-out;
 }

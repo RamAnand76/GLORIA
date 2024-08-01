@@ -6,7 +6,7 @@ export const Header: React.FC<{
   toggleNav: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ toggleNav }) => {
   return (
-    <header className="flex justify-between bg-white w-full h-[64px] p-3">
+    <header className="flex justify-between bg-white w-full h-[64px] p-3 sticky top-0 z-50">
       <button
         type="button"
         className="lg:invisible"

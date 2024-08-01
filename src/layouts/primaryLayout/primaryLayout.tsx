@@ -10,7 +10,7 @@ const PrimaryLayout = () => {
       <Navbar showNav={showNav} toggleNav={setShowBtn} />
       <div className="flex flex-col lg:ml-64 w-full">
         <Header toggleNav={setShowBtn} />
-        <div className="flex-1 w-full">
+        <div className="flex-1 w-full h-full p-2">
           <Outlet />
         </div>
       </div>

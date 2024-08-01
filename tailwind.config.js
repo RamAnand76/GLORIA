@@ -19,6 +19,8 @@ export default {
       },
       colors: {
         primary: '#07283b',
+        success: '#0b640f',
+        danger: '#cf2828',
       },
     },
   },

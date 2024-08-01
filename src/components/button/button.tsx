@@ -1,16 +1,17 @@
-import React, { ButtonHTMLAttributes } from 'react';
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+import { ButtonProps as BaseButtonProps, Button } from '@nextui-org/react';
+import React from 'react';
+interface ButtonProps extends BaseButtonProps {
   label: string;
-  btnMode?: 'primary' | 'secondary';
 }
-const Button: React.FC<ButtonProps> = ({ label, ...rest }) => {
+const ButtonComp: React.FC<ButtonProps> = ({ label, ...rest }) => {
   return (
-    <button
-      className="rounded-3xl bg-green-500 px-3 py-2 text-sm font-medium text-white" {...rest} >
+    <Button
+      className={`font-semibold text-white h-9 rounded-[20px] ${rest.className}`}
+      {...rest}
+    >
       {label}
-    </button>
+    </Button>
   );
 };
 
-export default Button;
+export default ButtonComp;

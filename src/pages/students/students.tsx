@@ -1,5 +1,7 @@
 import Table from '@/components/table';
+import PATH from '@/routes/paths';
 import React from 'react';
+import { Link } from 'react-router-dom';
 const rows = [
   {
     key: '1',
@@ -29,7 +31,8 @@ const rows = [
 const Students = () => {
   return (
     <section className="p-2">
-      <Table dataRows={{ results: rows, count: rows.length }} />
+      <Link to={PATH.addEmployees}>nav</Link>
+      {/* <Table dataRows={{ results: rows, count: rows.length }} /> */}
     </section>
   );
 };

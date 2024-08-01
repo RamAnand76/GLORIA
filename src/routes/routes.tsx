@@ -6,11 +6,13 @@ import PATH from './paths';
 const Dashboard = lazy(() => import('@/pages/dashboard'));
 const Employees = lazy(() => import('@/pages/employees'));
 const Students = lazy(() => import('@/pages/students'));
+const AddEmployee = lazy(() => import('@/pages/addEmployee'));
 
 const Router = createBrowserRouter([
   {
     path: '/',
     element: <PrimaryLayout />,
+    ErrorBoundary: () => <div>loading</div>,
     children: [
       {
         path: PATH.dashboard,
@@ -23,6 +25,10 @@ const Router = createBrowserRouter([
       {
         path: PATH.students,
         element: <Students />,
+      },
+      {
+        path: PATH.addEmployees,
+        element: <AddEmployee />,
       },
     ],
   },

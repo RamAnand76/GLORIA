@@ -1,6 +1,6 @@
 import GetIcons from '@/assets/icons';
 import { navItems } from '@/utils/constants';
-import { Link } from '@nextui-org/react';
+import { Link } from 'react-router-dom';
 import React from 'react';
 export const Navbar: React.FC<{
   showNav: boolean;
@@ -10,7 +10,11 @@ export const Navbar: React.FC<{
     className={`fixed ${!showNav && '-ml-64'} lg:ml-0 sidebar inset-y-0 left-0 bg-primary text-white w-64`}
   >
     <div className="flex items-center justify-between py-1 px-3">
-      <img src="assets/img/kaiadmin/LOGO.jpg" alt="Logo" className="h-[70px]" />
+      <img
+        src="@/assets/img/kaiadmin/LOGO.jpg"
+        alt="Logo"
+        className="h-[70px]"
+      />
       <button
         type="button"
         className="lg:hidden"
@@ -22,7 +26,7 @@ export const Navbar: React.FC<{
     <nav className="flex flex-col gap-2 py-8 px-6 space-y-2 text-white">
       {navItems.map((item, index: number) => (
         <Link
-          href={`/${item}`}
+          to={`/${item}`}
           className="flex gap-4 items-center text-[#e2e8ee] capitalize"
           key={index}
         >
