@@ -26,6 +26,7 @@ body {
   animation-fill-mode: forwards;
   color: rgb(var(--foreground-rgb));
   background: #dbdfe0;
+  @apply font-Roboto;
 
   #root {
     height: 100%;
@@ -35,6 +36,23 @@ body {
     color: black;
     @media screen {
     }
+  }
+  ::-webkit-scrollbar {
+    width: 6px; /* Width of the entire scrollbar */
+    height: 6px; /* Height of the scrollbar (for horizontal scroll) */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners of the scrollbar thumb */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color when hovering over the scrollbar */
   }
 }
 @keyframes fadeInAnimation {

@@ -11,42 +11,30 @@ import {
   TableRow,
 } from '@nextui-org/react';
 import React, { useMemo } from 'react';
+import useSWR from 'swr';
 import TableHeaderComp, { TableHeaderProps } from '../tableHeader/tableHeader';
+import { swrKeys } from '@/utils/constants';
 
 export interface TableCompProps extends TableHeaderProps, TableProps {
-  dataRows: { count: number; results: any[] };
-  isLoading?: boolean;
+  page: number;
+  columns: { label: string; key: string }[];
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  fetcher: () => Promise<any>;
 }
 
 const TableComp: React.FC<TableCompProps> = ({
-  dataRows: data,
-  isLoading = false,
+  page,
+  columns,
+  setPage,
+  fetcher,
   ...rest
 }) => {
-  const [page, setPage] = React.useState(1);
-
-  // const { data, isLoading } = useSWR(
-  //   `https://swapi.py4e.com/api/people?page=${page}`,
-  //   fetcher,
-  //   {
-  //     keepPreviousData: true,
-  //   }
-  // );
-
-  const columns = [
-    {
-      key: 'name',
-      label: 'NAME',
-    },
-    {
-      key: 'role',
-      label: 'ROLE',
-    },
-    {
-      key: 'status',
-      label: 'STATUS',
-    },
-  ];
+  const { data, isLoading } = useSWR(`${swrKeys.EMPLOYEES}-${page}`, fetcher, {
+    keepPreviousData: true,
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+  });
 
   const rowsPerPage = 10;
 
@@ -55,15 +43,17 @@ const TableComp: React.FC<TableCompProps> = ({
   }, [data?.count, rowsPerPage]);
 
   const loadingState =
-    isLoading || data?.results.length === 0 ? 'loading' : 'idle';
+    isLoading || data?.results?.length === 0 ? 'loading' : 'idle';
 
   return (
-    <section className="flex flex-col gap-3">
+    <section className="flex flex-col gap-3 overflow-hidden h-full">
       <TableHeaderComp {...rest} />
       <Table
         aria-label="Example table with client async pagination"
         selectionMode="multiple"
         color="primary"
+        isHeaderSticky
+        classNames={{ base: 'overflow-auto' }}
         bottomContent={
           pages > 0 ? (
             <div className="flex w-full justify-center">

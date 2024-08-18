@@ -1,40 +1,24 @@
 import Table from '@/components/table';
 import PATH from '@/routes/paths';
+import { ListEmployees } from '@/services/employeeService';
+import { employeeColums } from '@/utils/constants';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-const rows = [
-  {
-    key: '1',
-    name: 'Tony Reichert',
-    role: 'CEO',
-    status: 'Active',
-  },
-  {
-    key: '2',
-    name: 'Zoey Lang',
-    role: 'Technical Lead',
-    status: 'Paused',
-  },
-  {
-    key: '3',
-    name: 'Jane Fisher',
-    role: 'Senior Developer',
-    status: 'Active',
-  },
-  {
-    key: '4',
-    name: 'William Howard',
-    role: 'Community Manager',
-    status: 'Vacation',
-  },
-];
+
 const Employees = () => {
   const navigate = useNavigate();
+  const [page, setPage] = React.useState(1);
+  const fetchEmployees = () => {
+    return ListEmployees({ limit: 10, page });
+  };
   return (
-    <section className="p-2">
+    <section className="p-2 overflow-hidden h-full">
       <Table
-        dataRows={{ results: rows, count: rows.length }}
         btnLabel="Add Employee"
+        setPage={setPage}
+        page={page}
+        fetcher={fetchEmployees}
+        columns={employeeColums}
         onClick={() => navigate(PATH.addEmployees)}
       />
     </section>
