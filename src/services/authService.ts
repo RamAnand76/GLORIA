@@ -1,5 +1,5 @@
-import { setLocalStorage } from '@/utils/helpers/helpers';
-import { api } from './config/api.config';
+import { getLocalStorage, setLocalStorage } from '@/utils/helpers/helpers';
+import { api, privateAPI } from './config/api.config';
 
 export const Login = async (payload: ILogin) => {
   try {
@@ -9,5 +9,16 @@ export const Login = async (payload: ILogin) => {
     return true;
   } catch (error) {
     throw error;
+  }
+};
+
+export const ValidateToken = async () => {
+  try {
+    const response = await privateAPI.post('auth/validate-token/', {
+      access: getLocalStorage('_at'),
+    });
+    return response.data.valid_token;
+  } catch (error) {
+    return false;
   }
 };

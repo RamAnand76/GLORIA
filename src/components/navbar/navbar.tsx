@@ -2,6 +2,7 @@ import GetIcons from '@/assets/icons';
 import { navItems } from '@/utils/constants';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import Logo from '@/assets/images/LOGO_OG.jpg';
 export const Navbar: React.FC<{
   showNav: boolean;
   toggleNav: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,11 +11,7 @@ export const Navbar: React.FC<{
     className={`fixed ${!showNav && '-ml-64'} lg:ml-0 sidebar inset-y-0 left-0 bg-primary text-white w-64`}
   >
     <div className="flex items-center justify-between py-1 px-3">
-      <img
-        src="@/assets/img/kaiadmin/LOGO.jpg"
-        alt="Logo"
-        className="h-[70px]"
-      />
+      <img src={Logo} alt="Logo" className="h-[70px]" />
       <button
         type="button"
         className="lg:hidden"

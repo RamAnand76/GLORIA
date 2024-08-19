@@ -1,40 +1,40 @@
 import Table from '@/components/table';
 import PATH from '@/routes/paths';
+import { ListStudents } from '@/services/studentService';
+import { studentColums, swrKeys } from '@/utils/constants';
 import React from 'react';
-import { Link } from 'react-router-dom';
-const rows = [
-  {
-    key: '1',
-    name: 'Tony Reichert',
-    role: 'CEO',
-    status: 'Active',
-  },
-  {
-    key: '2',
-    name: 'Zoey Lang',
-    role: 'Technical Lead',
-    status: 'Paused',
-  },
-  {
-    key: '3',
-    name: 'Jane Fisher',
-    role: 'Senior Developer',
-    status: 'Active',
-  },
-  {
-    key: '4',
-    name: 'William Howard',
-    role: 'Community Manager',
-    status: 'Vacation',
-  },
-];
-const Students = () => {
+import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
+
+const Employees = () => {
+  const navigate = useNavigate();
+  const [page, setPage] = React.useState(1);
+
+  const { data, isLoading } = useSWR(
+    `${swrKeys.STUDENTS}-${page}`,
+    () => ListStudents({ limit: 10, page }),
+    {
+      keepPreviousData: true,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+    }
+  );
+
   return (
-    <section className="p-2">
-      <Link to={PATH.addEmployees}>nav</Link>
-      {/* <Table dataRows={{ results: rows, count: rows.length }} /> */}
+    <section className="p-2 overflow-hidden h-full">
+      <Table
+        btnLabel="Add Student"
+        setPage={setPage}
+        page={page}
+        data={data}
+        rowsPerPage={10}
+        isLoading={isLoading}
+        columns={studentColums}
+        // onClick={() => navigate(PATH.addEmployees)}
+      />
     </section>
   );
 };
 
-export default Students;
+export default Employees;

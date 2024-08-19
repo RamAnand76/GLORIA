@@ -10,10 +10,8 @@ interface IRegister {
   is_admin: boolean;
   is_employee: boolean;
 }
-interface IBulkRegister {
-  file: File;
-}
-interface IListEmployees {
+type TBulkRegister = FormData;
+interface IListTableData {
   page: number;
   limit: number;
 }
@@ -29,4 +27,25 @@ interface IEmployee {
   first_name: string;
   last_name: string;
   is_employee: boolean;
+}
+interface IBulkRegister_R {
+  download_link: string;
+  successful_registrations: number;
+  failed_registrations: number;
+}
+interface IStudent {
+  id: string;
+  name: string;
+  email: null | string;
+  phone_number: string;
+  place: string;
+  course: string;
+  staff_assigned: string;
+  feedback: null | string;
+  status: string;
+}
+
+interface IStudent_R {
+  count: number;
+  results: IStudent[];
 }

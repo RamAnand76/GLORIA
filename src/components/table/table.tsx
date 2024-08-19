@@ -11,33 +11,26 @@ import {
   TableRow,
 } from '@nextui-org/react';
 import React, { useMemo } from 'react';
-import useSWR from 'swr';
 import TableHeaderComp, { TableHeaderProps } from '../tableHeader/tableHeader';
-import { swrKeys } from '@/utils/constants';
 
 export interface TableCompProps extends TableHeaderProps, TableProps {
   page: number;
+  data: { count: number; results: Record<string, string>[] };
+  isLoading: boolean;
+  rowsPerPage: number;
   columns: { label: string; key: string }[];
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  fetcher: () => Promise<any>;
 }
 
 const TableComp: React.FC<TableCompProps> = ({
   page,
   columns,
   setPage,
-  fetcher,
+  data,
+  isLoading,
+  rowsPerPage,
   ...rest
 }) => {
-  const { data, isLoading } = useSWR(`${swrKeys.EMPLOYEES}-${page}`, fetcher, {
-    keepPreviousData: true,
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: true,
-  });
-
-  const rowsPerPage = 10;
-
   const pages = useMemo(() => {
     return data?.count ? Math.ceil(data.count / rowsPerPage) : 0;
   }, [data?.count, rowsPerPage]);
@@ -53,22 +46,11 @@ const TableComp: React.FC<TableCompProps> = ({
         selectionMode="multiple"
         color="primary"
         isHeaderSticky
-        classNames={{ base: 'overflow-auto' }}
-        bottomContent={
-          pages > 0 ? (
-            <div className="flex w-full justify-center">
-              <Pagination
-                isCompact
-                showControls
-                showShadow
-                color="primary"
-                page={page}
-                total={pages}
-                onChange={(page) => setPage(page)}
-              />
-            </div>
-          ) : null
-        }
+        classNames={{
+          base: 'overflow-auto bg-white rounded-lg pr-1 shadow-small',
+          wrapper: 'shadow-none p-0',
+        }}
+
         // {...args}
       >
         <TableHeader columns={columns}>
@@ -77,7 +59,7 @@ const TableComp: React.FC<TableCompProps> = ({
           )}
         </TableHeader>
         <TableBody
-          items={data.results ?? []}
+          items={data?.results ?? []}
           loadingContent={<Spinner />}
           loadingState={loadingState}
         >
@@ -90,6 +72,17 @@ const TableComp: React.FC<TableCompProps> = ({
           )}
         </TableBody>
       </Table>
+      <div className="flex w-full justify-center ">
+        <Pagination
+          isCompact
+          showControls
+          showShadow
+          color="primary"
+          page={page}
+          total={pages}
+          onChange={setPage}
+        />
+      </div>
     </section>
   );
 };

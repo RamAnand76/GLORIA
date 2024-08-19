@@ -10,7 +10,7 @@ export const Register = async (payload: IRegister) => {
   }
 };
 
-export const BulkRegister = async (payload: IBulkRegister) => {
+export const BulkRegister = async (payload: TBulkRegister) => {
   try {
     const response = await privateAPI.post('auth/bulk-register/', payload, {
       headers: {
@@ -23,7 +23,7 @@ export const BulkRegister = async (payload: IBulkRegister) => {
   }
 };
 
-export const ListEmployees = async ({ limit, page }: IListEmployees) => {
+export const ListEmployees = async ({ limit, page }: IListTableData) => {
   try {
     const response = await privateAPI.get(
       `admin/employees/?page=${page}&page_size=${limit}`

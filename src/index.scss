@@ -12,6 +12,12 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+.slideIn {
+  animation: fadeInAnimation ease 3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
 body {
   box-sizing: border-box;
   margin: 0;
@@ -21,13 +27,10 @@ body {
   -webkit-font-smoothing: antialiased; /* Improve text rendering */
   -moz-osx-font-smoothing: grayscale; /* Improve text rendering on macOS */
   scroll-behavior: smooth;
-  animation: fadeInAnimation ease 3s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
   color: rgb(var(--foreground-rgb));
   background: #dbdfe0;
   @apply font-Roboto;
-
+  @extend .slideIn;
   #root {
     height: 100%;
     width: 100%;
@@ -38,21 +41,15 @@ body {
     }
   }
   ::-webkit-scrollbar {
-    width: 6px; /* Width of the entire scrollbar */
-    height: 6px; /* Height of the scrollbar (for horizontal scroll) */
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background of the scrollbar track */
+    background: transparent;
+    width: 4px !important;
+    height: 4px !important;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #888; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners of the scrollbar thumb */
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color when hovering over the scrollbar */
+    background: rgba(54, 54, 54, 0.25);
+    width: 1px !important;
+    border-radius: 30px !important;
   }
 }
 @keyframes fadeInAnimation {

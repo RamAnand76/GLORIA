@@ -34,7 +34,9 @@
       "@/routes/*": ["routes/*"],
       "@/services/*": ["services/*"],
       "@/utils/*": ["utils/*"],
-      "@/layouts/*": ["layouts/*"]
+      "@/layouts/*": ["layouts/*"],
+      "@/context/*": ["context/*"]
+
 
 
     }

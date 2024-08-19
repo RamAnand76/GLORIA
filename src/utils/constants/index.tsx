@@ -1,6 +1,7 @@
 export const navItems: string[] = ['dashboard', 'employees', 'students'];
 export const swrKeys = {
   EMPLOYEES: 'employees',
+  STUDENTS: 'students',
 };
 export const employeeColums = [
   {
@@ -18,5 +19,31 @@ export const employeeColums = [
   {
     key: 'phone_number',
     label: 'PHONE_NUMBER',
+  },
+];
+export const studentColums = [
+  {
+    key: 'name',
+    label: 'NAME',
+  },
+  {
+    key: 'email',
+    label: 'EMAIL',
+  },
+  {
+    key: 'phone_number',
+    label: 'PHONE NUMBER',
+  },
+  {
+    key: 'course',
+    label: 'COURSE',
+  },
+  {
+    key: 'staff_assigned',
+    label: 'STAFF ASSIGNED',
+  },
+  {
+    key: 'status',
+    label: 'STATUS',
   },
 ];

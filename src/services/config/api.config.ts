@@ -1,4 +1,4 @@
-import { getLocalStorage } from '@/utils/helpers/helpers';
+import { getLocalStorage, setLocalStorage } from '@/utils/helpers/helpers';
 import axios from 'axios';
 
 export const api = axios.create({
@@ -37,27 +37,33 @@ privateAPI.interceptors.response.use(
   function (error) {
     const originalRequest = error.config;
 
-    if (error.response.status === 401) {
+    if (
+      [401, 400].includes(error.response.status) &&
+      originalRequest.url ===
+        `${import.meta.env.VITE_BASE_URL}/auth/validate-token`
+    ) {
       window.location.replace('/auth');
       return Promise.reject(error);
     }
 
-    // if (error.response.status === 401 && !originalRequest._retry) {
-    //   originalRequest._retry = true
-    //   const refreshToken = localStorageService.getRefreshToken()
-    //   return axios
-    //     .post('/auth/token', {
-    //       refresh_token: refreshToken
-    //     })
-    //     .then(res => {
-    //       if (res.status === 201) {
-    //         localStorageService.setToken(res.data)
-    //         axios.defaults.headers.common['Authorization'] =
-    //           'Bearer ' + localStorageService.getAccessToken()
-    //         return axios(originalRequest)
-    //       }
-    //     })
-    // }
+    if ([401, 400].includes(error.response.status) && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = getLocalStorage('_rt');
+      return axios
+        .post(`${import.meta.env.VITE_BASE_URL}/auth/token/refresh/`, {
+          refresh: refreshToken,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res.data.access);
+
+            setLocalStorage({ key: '_at', value: res.data.access });
+            axios.defaults.headers.common['Authorization'] =
+              'Bearer ' + res.data.access;
+            return axios(originalRequest);
+          }
+        });
+    }
     return Promise.reject(error);
   }
 );

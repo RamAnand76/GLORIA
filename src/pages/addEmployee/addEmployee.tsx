@@ -1,9 +1,9 @@
 import GetIcons from '@/assets/icons';
 import Button from '@/components/button';
-import ButtonComp from '@/components/button/button';
 import CheckBox from '@/components/checkbox/checkbox';
 import Input from '@/components/input';
-import { Register } from '@/services/employeeService';
+import { BulkRegister, Register } from '@/services/employeeService';
+import useStore from '@/store/store';
 import { notify } from '@/utils/helpers/helpers';
 import { NewEmployeeSchema } from '@/utils/validationSchemas';
 import { Formik, FormikHelpers } from 'formik';
@@ -16,6 +16,8 @@ import React, { useState } from 'react';
  */
 const AddEmployee: React.FC = (): React.JSX.Element => {
   const [file, setFile] = useState<File | undefined>(undefined);
+  const [uploadingFile, setUploadingFile] = useState<boolean>(false);
+  const { bulkRegisterData, setBulkRegisterData } = useStore((state) => state);
 
   /**
    * @function handleEmployeeRegister
@@ -31,35 +33,68 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
       actions.resetForm();
     });
   };
+
+  const handleBulkRegister = async () => {
+    setUploadingFile(true);
+    const formData = new FormData();
+    file && formData.append('file', file);
+    BulkRegister(formData)
+      .then((resp) => setBulkRegisterData(resp))
+      .finally(() => setUploadingFile(false));
+  };
   return (
     <div className="h-full w-full flex flex-col gap-4 rounded-lg bg-white p-2">
-      <div className="p-3 flex items-center gap-4 bg-slate-300 rounded-md">
-        <p className={file?.name && 'text-primary'}>
-          {file
-            ? file.name
-            : 'Multiple Employees can be added through a Excel file(.xlsx).'}
-        </p>
-        {file && (
-          <Button
-            label="Upload"
-            startContent={GetIcons('upload')}
-            color="success"
-          />
-        )}
-        <label
-          htmlFor="bulk_upload"
-          className="bg-primary-800 font-medium p-2 border-1 rounded-lg cursor-pointer ml-auto text-white"
-        >
-          {file ? 'Change' : 'Select'} File
-        </label>
+      <div className="bg-slate-300 p-3 rounded-md">
+        <div className="flex items-center gap-4">
+          <p className={file?.name && 'text-primary'}>
+            {file
+              ? file.name
+              : 'Multiple Employees can be added through a Excel file(.xlsx).'}
+          </p>
+          {file && (
+            <Button
+              label="Upload"
+              startContent={GetIcons('upload')}
+              color="success"
+              onClick={handleBulkRegister}
+              isLoading={uploadingFile}
+            />
+          )}
+          <label
+            htmlFor="bulk_upload"
+            className="bg-primary-800 font-medium p-2 border-1 rounded-lg cursor-pointer ml-auto text-white"
+          >
+            {file ? 'Change' : 'Select'} File
+          </label>
 
-        <input
-          type="file"
-          id="bulk_upload"
-          className="hidden"
-          accept=".csv,.xls,.xlsx"
-          onChange={(e) => setFile(e?.target?.files?.[0])}
-        />
+          <input
+            type="file"
+            id="bulk_upload"
+            className="hidden"
+            accept=".csv,.xls,.xlsx"
+            onChange={(e) => setFile(e?.target?.files?.[0])}
+          />
+        </div>
+        {bulkRegisterData?.download_link && (
+          <div className="p-2 rounded-md border border-black text-xs font-medium mt-2 text-red-700">
+            <span>
+              {bulkRegisterData.successful_registrations} Employees added
+              successfully and {bulkRegisterData.failed_registrations} failed
+            </span>
+            <p className="flex items-center italic gap-1 mt-1">
+              {GetIcons('info')}{' '}
+              <a
+                href={bulkRegisterData.download_link}
+                target="_blank"
+                className="hover:underline"
+              >
+                Click here {''}
+              </a>
+              for the registered employee details. NOTE: Link will only be
+              available till next bulk registration.
+            </p>
+          </div>
+        )}
       </div>
       <Formik
         initialValues={{
