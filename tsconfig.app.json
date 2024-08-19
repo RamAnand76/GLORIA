@@ -32,7 +32,13 @@
       "@/store/*": ["store/*"],
       "@/assets/*": ["assets/*"],
       "@/routes/*": ["routes/*"],
-      "@/services/*": ["services/*"]
+      "@/services/*": ["services/*"],
+      "@/utils/*": ["utils/*"],
+      "@/layouts/*": ["layouts/*"],
+      "@/context/*": ["context/*"]
+
+
+
     }
   },
 

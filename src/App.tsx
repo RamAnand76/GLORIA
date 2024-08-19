@@ -1,7 +1,12 @@
 import Routes from '@/routes/routes';
+import AuthContextProvider from '@/context/authContext';
 import { RouterProvider } from 'react-router-dom';
 const App = () => {
-  return <RouterProvider router={Routes} />;
+  return (
+    <AuthContextProvider>
+      <RouterProvider router={Routes} />
+    </AuthContextProvider>
+  );
 };
 
 export default App;
