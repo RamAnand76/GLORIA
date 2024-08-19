@@ -47,7 +47,7 @@ const TableComp: React.FC<TableCompProps> = ({
         color="primary"
         isHeaderSticky
         classNames={{
-          base: 'overflow-auto bg-white rounded-lg pr-1 shadow-small',
+          base: 'overflow-auto bg-white rounded-lg pr-1 shadow-small flex-1',
           wrapper: 'shadow-none p-0',
         }}
 
@@ -72,7 +72,7 @@ const TableComp: React.FC<TableCompProps> = ({
           )}
         </TableBody>
       </Table>
-      <div className="flex w-full justify-center ">
+      <div className="flex w-full justify-center h-9 ">
         <Pagination
           isCompact
           showControls

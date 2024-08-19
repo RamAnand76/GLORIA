@@ -1,6 +1,6 @@
 const PATH = {
+  home: '/',
   auth: '/auth',
-  dashboard: '/dashboard',
   employees: '/employees',
   addEmployees: '/employees/add-employees',
   students: '/students',

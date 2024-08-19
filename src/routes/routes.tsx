@@ -22,7 +22,6 @@ const Router = createBrowserRouter([
     ],
   },
   {
-    path: '/',
     element: <PrimaryLayout />,
     ErrorBoundary: () => <div>loading</div>,
     children: [
@@ -30,7 +29,8 @@ const Router = createBrowserRouter([
         element: <PrivateRoute />,
         children: [
           {
-            path: PATH.dashboard,
+            index: true,
+            path: PATH.home,
             element: <Dashboard />,
           },
           {

@@ -47,3 +47,4 @@ export const studentColums = [
     label: 'STATUS',
   },
 ];
+export const headerMenuOptions = ['Settings', 'Logout'];
