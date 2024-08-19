@@ -1,8 +1,11 @@
-
 /** @type {import('tailwindcss').Config} */
+const { nextui } = require('@nextui-org/react');
+
 export default {
   content: [
-    './index.html', './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -14,7 +17,13 @@ export default {
         Lato: ['Lato', 'sans-serif'],
         Roboto: ['Roboto', 'sans-serif'],
       },
+      colors: {
+        primary: '#07283b',
+        success: '#0b640f',
+        danger: '#cf2828',
+      },
     },
   },
-  plugins: [],
-}
+  darkMode: 'class',
+  plugins: [nextui()],
+};
