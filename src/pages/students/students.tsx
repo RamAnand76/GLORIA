@@ -1,5 +1,4 @@
 import Table from '@/components/table';
-import PATH from '@/routes/paths';
 import { ListStudents } from '@/services/studentService';
 import { studentColums, swrKeys } from '@/utils/constants';
 import React from 'react';
