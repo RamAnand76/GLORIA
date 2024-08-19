@@ -29,7 +29,7 @@ body {
   scroll-behavior: smooth;
   color: rgb(var(--foreground-rgb));
   background: #dbdfe0;
-  @apply font-Roboto;
+  @apply font-Outfit;
   @extend .slideIn;
   #root {
     height: 100%;
@@ -37,8 +37,6 @@ body {
     font-size: 14px;
     font-weight: 400;
     color: black;
-    @media screen {
-    }
   }
   ::-webkit-scrollbar {
     background: transparent;

@@ -5,12 +5,19 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  MenuItemProps,
 } from '@nextui-org/react';
-interface MenuProps {
+interface MenuProps extends MenuItemProps {
   title: string;
   options: React.ReactNode[];
+  onSelectItem: (item: any) => void;
 }
-const Menu: React.FC<MenuProps> = ({ title, options }) => {
+const Menu: React.FC<MenuProps> = ({
+  title,
+  options,
+  onSelectItem,
+  ...rest
+}) => {
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -18,7 +25,13 @@ const Menu: React.FC<MenuProps> = ({ title, options }) => {
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         {options.map((option, index) => (
-          <DropdownItem key={index}>{option}</DropdownItem>
+          <DropdownItem
+            key={index}
+            {...rest}
+            onPress={() => onSelectItem(option)}
+          >
+            {option}
+          </DropdownItem>
         ))}
       </DropdownMenu>
     </Dropdown>

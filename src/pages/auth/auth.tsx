@@ -14,7 +14,7 @@ const Auth: React.FC = () => {
   const handleFormSubmit = (values: ILogin) => {
     setIsLoading(true);
     Login(values)
-      .then(() => location.replace(PATH.dashboard))
+      .then(() => location.replace(PATH.home))
       .catch((error) => notify(error.response.data.detail, { type: 'error' }))
       .finally(() => setIsLoading(false));
   };
@@ -56,7 +56,7 @@ const Auth: React.FC = () => {
                 value={values.username}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                isInvalid={touched.username}
+                isInvalid={touched.username && !!errors.username}
                 errorMessage={errors.username}
               />
               <Input
@@ -70,7 +70,7 @@ const Auth: React.FC = () => {
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                isInvalid={touched.password}
+                isInvalid={touched.password && !!errors.password}
                 errorMessage={errors.password}
               />
               <div className="flex py-2 px-1 justify-between w-full">
