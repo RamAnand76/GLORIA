@@ -57,7 +57,7 @@ const Auth: React.FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 isInvalid={touched.username && !!errors.username}
-                errorMessage={errors.username}
+                errorText={errors.username}
               />
               <Input
                 label="Password"
@@ -71,7 +71,7 @@ const Auth: React.FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 isInvalid={touched.password && !!errors.password}
-                errorMessage={errors.password}
+                errorText={errors.password}
               />
               <div className="flex py-2 px-1 justify-between w-full">
                 <Link color="primary" href="#" size="sm">

@@ -47,8 +47,8 @@ const TableComp: React.FC<TableCompProps> = ({
         color="primary"
         isHeaderSticky
         classNames={{
-          base: 'overflow-auto bg-white rounded-lg pr-1 shadow-small flex-1',
-          wrapper: 'shadow-none p-0',
+          base: 'overflow-auto bg-white rounded-lg shadow-small flex-1',
+          wrapper: 'shadow-none p-0 rounded-none',
         }}
 
         // {...args}
