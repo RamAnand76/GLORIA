@@ -47,4 +47,12 @@ export const studentColums = [
     label: 'STATUS',
   },
 ];
-export const headerMenuOptions = ['Settings', 'Logout'];
+export const headerMenuOptions = [
+  { label: 'Settings', value: 'settings' },
+  { label: 'Logout', value: 'logout' },
+];
+export const paymentModeOptions = [
+  { label: 'Cash', value: 'cash' },
+  { label: 'UPI', value: 'upi' },
+  { label: 'Net Banking', value: 'net_banking' },
+];

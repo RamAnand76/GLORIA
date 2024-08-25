@@ -10,7 +10,6 @@ interface IRegister {
   is_admin: boolean;
   is_employee: boolean;
 }
-type TBulkRegister = FormData;
 interface IListTableData {
   page: number;
   limit: number;

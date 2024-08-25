@@ -5,9 +5,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './App.tsx';
 import './index.scss';
+import PageLoader from '@/components/pageLoader';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <NextUIProvider className="h-full">
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<PageLoader />}>
       <ToastContainer />
       <App />
     </Suspense>

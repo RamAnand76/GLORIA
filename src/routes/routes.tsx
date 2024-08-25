@@ -10,6 +10,7 @@ const Dashboard = lazy(() => import('@/pages/dashboard'));
 const Employees = lazy(() => import('@/pages/employees'));
 const Students = lazy(() => import('@/pages/students'));
 const AddEmployee = lazy(() => import('@/pages/addEmployee'));
+const AddStudents = lazy(() => import('@/pages/addStudents'));
 
 const Router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const Router = createBrowserRouter([
   },
   {
     element: <PrimaryLayout />,
-    ErrorBoundary: () => <div>loading</div>,
+    ErrorBoundary: () => <PrimaryLayout />,
     children: [
       {
         element: <PrivateRoute />,
@@ -44,6 +45,10 @@ const Router = createBrowserRouter([
           {
             path: PATH.addEmployees,
             element: <AddEmployee />,
+          },
+          {
+            path: PATH.addStudents,
+            element: <AddStudents />,
           },
         ],
       },

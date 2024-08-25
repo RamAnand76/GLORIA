@@ -1,10 +1,9 @@
 import Table from '@/components/table';
 import PATH from '@/routes/paths';
 import { ListEmployees } from '@/services/employeeService';
-import { employeeColums } from '@/utils/constants';
+import { employeeColums, swrKeys } from '@/utils/constants';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { swrKeys } from '@/utils/constants';
 import useSWR from 'swr';
 
 const Employees = () => {
@@ -23,7 +22,7 @@ const Employees = () => {
   );
 
   return (
-    <section className="p-2 overflow-hidden h-full">
+    <section className="h-full overflow-hidden p-2">
       <Table
         btnLabel="Add Employee"
         setPage={setPage}
