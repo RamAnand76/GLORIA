@@ -39,7 +39,7 @@ const TableComp: React.FC<TableCompProps> = ({
     isLoading || data?.results?.length === 0 ? 'loading' : 'idle';
 
   return (
-    <section className="flex flex-col gap-3 overflow-hidden h-full">
+    <section className="flex h-full flex-col gap-3 overflow-hidden">
       <TableHeaderComp {...rest} />
       <Table
         aria-label="Example table with client async pagination"
@@ -72,7 +72,7 @@ const TableComp: React.FC<TableCompProps> = ({
           )}
         </TableBody>
       </Table>
-      <div className="flex w-full justify-center h-9 ">
+      <div className="flex h-9 w-full justify-center ">
         <Pagination
           isCompact
           showControls

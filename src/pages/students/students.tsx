@@ -3,9 +3,12 @@ import { ListStudents } from '@/services/studentService';
 import { studentColums, swrKeys } from '@/utils/constants';
 import React from 'react';
 import useSWR from 'swr';
+import { useNavigate } from 'react-router-dom';
+import PATH from '@/routes/paths';
 
 const Employees = () => {
   const [page, setPage] = React.useState(1);
+  const navigate = useNavigate();
 
   const { data, isLoading } = useSWR(
     `${swrKeys.STUDENTS}-${page}`,
@@ -19,7 +22,7 @@ const Employees = () => {
   );
 
   return (
-    <section className="p-2 overflow-hidden h-full">
+    <section className="h-full overflow-hidden p-2">
       <Table
         btnLabel="Add Student"
         setPage={setPage}
@@ -28,7 +31,7 @@ const Employees = () => {
         rowsPerPage={10}
         isLoading={isLoading}
         columns={studentColums}
-        // onClick={() => navigate(PATH.addEmployees)}
+        onClick={() => navigate(PATH.addStudents)}
       />
     </section>
   );
