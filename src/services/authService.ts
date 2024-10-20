@@ -17,7 +17,16 @@ export const ValidateToken = async () => {
     const response = await privateAPI.post('auth/validate-token/', {
       access: getLocalStorage('_at'),
     });
-    return response.data.valid_token;
+    return response.data;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const GetUserDetails = async () => {
+  try {
+    const response = await privateAPI.get('auth/user-details/');
+    return response.data;
   } catch (error) {
     return false;
   }

@@ -33,3 +33,29 @@ export const ListEmployees = async ({ limit, page }: IListTableData) => {
     handleError(error);
   }
 };
+
+export const ListEmployeeNames = async ({
+  limit,
+  page,
+  search,
+}: IListTableData) => {
+  try {
+    const response = await privateAPI.get(
+      `admin/employee-list?page=${page}&page_size=${limit}?search=${search}/`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const GetEmployeeRanking = async ({ limit, page }: IListTableData) => {
+  try {
+    const response = await privateAPI.get(
+      `admin/employee-ranking/?page=${page}&page_size=${limit}`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};

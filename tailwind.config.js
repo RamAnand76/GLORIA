@@ -22,6 +22,9 @@ export default {
         success: '#0b640f',
         danger: '#cf2828',
       },
+      boxShadow: {
+        main: '0px 3px 8px rgba(0, 0, 0, 0.24)',
+      },
     },
   },
   darkMode: 'class',

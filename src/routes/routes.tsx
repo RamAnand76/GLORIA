@@ -1,5 +1,6 @@
+import PageLoader from '@/components/pageLoader';
 import PrimaryLayout from '@/layouts/primaryLayout';
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import PATH from './paths';
 import PrivateRoute from './privateRoutes';
@@ -10,10 +11,18 @@ const Dashboard = lazy(() => import('@/pages/dashboard'));
 const Employees = lazy(() => import('@/pages/employees'));
 const Students = lazy(() => import('@/pages/students'));
 const AddEmployee = lazy(() => import('@/pages/addEmployee'));
+const AddStudents = lazy(() => import('@/pages/addStudents'));
+const EditStudent = lazy(() => import('@/pages/editStudent'));
+const Colleges = lazy(() => import('@/pages/colleges'));
+const AddCollege = lazy(() => import('@/pages/addCollege'));
 
 const Router = createBrowserRouter([
   {
-    element: <PublicRoute />,
+    element: (
+      <Suspense fallback={<PageLoader />}>
+        <PublicRoute />
+      </Suspense>
+    ),
     children: [
       {
         path: PATH.auth,
@@ -23,14 +32,18 @@ const Router = createBrowserRouter([
   },
   {
     element: <PrimaryLayout />,
-    ErrorBoundary: () => <div>loading</div>,
+    ErrorBoundary: () => <div>error</div>,
     children: [
       {
-        element: <PrivateRoute />,
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <PrivateRoute />
+          </Suspense>
+        ),
         children: [
           {
             index: true,
-            path: PATH.home,
+            path: PATH.dashboard,
             element: <Dashboard />,
           },
           {
@@ -44,6 +57,26 @@ const Router = createBrowserRouter([
           {
             path: PATH.addEmployees,
             element: <AddEmployee />,
+          },
+          {
+            path: PATH.addStudents,
+            element: <AddStudents />,
+          },
+          {
+            path: PATH.editStudent,
+            element: <EditStudent />,
+          },
+          {
+            path: PATH.colleges,
+            element: <Colleges />,
+          },
+          {
+            path: PATH.addColleges,
+            element: <AddCollege />,
+          },
+          {
+            path: PATH.editCollege,
+            element: <AddCollege />,
           },
         ],
       },

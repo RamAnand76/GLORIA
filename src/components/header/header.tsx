@@ -1,20 +1,25 @@
 import GetIcons from '@/assets/icons';
 import Menu from '@/components/dropdown';
+import useStore from '@/store/store';
 import { headerMenuOptions } from '@/utils/constants';
 import { Avatar } from '@nextui-org/react';
 import React from 'react';
+
 export const Header: React.FC<{
   toggleNav: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ toggleNav }) => {
-  const handleAction = (actionName: string) => {
-    if (actionName === 'Logout') {
+  const { userDetails } = useStore((state) => state);
+
+  const handleAction = (action: TOption) => {
+    if (action.label === 'Logout') {
       localStorage.clear();
       window.location.reload();
     }
     return;
   };
+
   return (
-    <header className="flex justify-between bg-white w-full h-[64px] p-3 sticky top-0 z-50">
+    <header className="sticky top-0 z-50 flex h-[64px] w-full justify-between bg-white p-3">
       <button
         type="button"
         className="lg:invisible"
@@ -22,10 +27,11 @@ export const Header: React.FC<{
       >
         {GetIcons('menu')}
       </button>
-      <div className="flex gap-1">
-        <Avatar />
+      <div className="ml-auto inline-flex gap-1">
+        <Avatar classNames={{ base: 'block shrink-0' }} />
         <Menu
-          title="Admin"
+          title={userDetails?.first_name + ' ' + userDetails?.last_name}
+          showLabel={false}
           options={headerMenuOptions}
           onSelectItem={handleAction}
         />

@@ -29,14 +29,17 @@ body {
   scroll-behavior: smooth;
   color: rgb(var(--foreground-rgb));
   background: #dbdfe0;
+  button {
+    outline: none !important;
+  }
   @apply font-Outfit;
   @extend .slideIn;
   #root {
     height: 100%;
     width: 100%;
-    font-size: 14px;
     font-weight: 400;
     color: black;
+    @apply text-sm xl:text-xl;
   }
   ::-webkit-scrollbar {
     background: transparent;

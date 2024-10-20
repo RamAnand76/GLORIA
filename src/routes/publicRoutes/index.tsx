@@ -6,6 +6,8 @@ import { authContext } from '@/context/authContext';
 const AuthRoute = () => {
   //@ts-ignore
   const { isValidUser } = useContext(authContext);
+  console.log(isValidUser);
+
   if (isValidUser === null) {
     return <PageLoader />;
   } else if (isValidUser) {
