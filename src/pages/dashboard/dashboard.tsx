@@ -8,11 +8,11 @@ import Pagination from '@/components/pagination';
 
 const Dashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [showingLimit, setShowingLimit] = useState<number>(5);
+
   /********************************SERVICE CALLS************************************** */
-  const { data, isLoading } = useSWR(
+  const { data } = useSWR(
     `${swrKeys.DASHBOARD}-${currentPage}`,
-    () => GetEmployeeRanking({ limit: showingLimit, page: currentPage }),
+    () => GetEmployeeRanking({ limit: 5, page: currentPage }),
     {
       keepPreviousData: true,
       revalidateIfStale: false,
@@ -81,7 +81,7 @@ const Dashboard: React.FC = () => {
 
       <Pagination
         currentPage={currentPage}
-        showingLimit={showingLimit}
+        showingLimit={5}
         totalCount={data?.count || 0}
         setCurrentPage={setCurrentPage}
       />

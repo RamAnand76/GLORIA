@@ -21,7 +21,7 @@ const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     ValidateToken().then((value) => setIsTokenData(value));
   }, []);
 
-  const { data, isLoading, mutate } = useSWR(
+  const { isLoading } = useSWR(
     `${swrKeys.USER_DETAILS}`,
     async () => {
       const response = await GetUserDetails();

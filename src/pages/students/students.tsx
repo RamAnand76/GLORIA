@@ -123,9 +123,12 @@ const Students = () => {
           totalCount={data?.count}
           accOptions={studentFilterOptions}
           setCurrentPage={setPage}
+          //@ts-ignore
           selectedItems={selectedFilter}
+          //@ts-ignore
           setSelectedItems={handleFilterSelection}
           handleApplyButton={() => mutate()}
+          //@ts-ignore
           reset={() => setSelectedFilter([])}
           onBtnClick={() => navigate(PATH.addStudents)}
           isBtnDisabled={!is_admin}

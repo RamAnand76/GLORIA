@@ -4,7 +4,7 @@ export interface FilterProps {
     label: string;
     iterables: TOption[];
   }[];
-  selectedItems: string[];
+  selectedItems: TOption[];
   setSelectedItems: (data: TOption) => void;
   reset: () => void;
   handleApplyButton: () => void;

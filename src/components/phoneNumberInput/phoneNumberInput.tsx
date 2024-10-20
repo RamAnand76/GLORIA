@@ -1,4 +1,3 @@
-import { InputProps } from '@nextui-org/react';
 import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import { getCountries, getCountryCallingCode } from 'react-phone-number-input';
 import en from 'react-phone-number-input/locale/en';
