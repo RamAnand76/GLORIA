@@ -1,5 +1,5 @@
 const PATH = {
-  dashboard: '/dashboard',
+  dashboard: '/',
   auth: '/auth',
   employees: '/employees',
   addEmployees: '/employees/add-employees',

@@ -6,7 +6,7 @@ export interface AccordionAppProps {
     label: string;
     iterables: TOption[];
   }[];
-  selectedItems: { [key: string]: string[] };
+  selectedItems: TOption[];
   setSelectedItems: (data: TOption) => void;
 }
 const Accordion: React.FC<AccordionAppProps> = ({
@@ -23,6 +23,7 @@ const Accordion: React.FC<AccordionAppProps> = ({
               <span
                 key={_index}
                 onClick={() => setSelectedItems({ label, value })}
+                //@ts-ignore
                 className={`p-2 text-base cursor-pointer rounded-full ${selectedItems?.[label]?.includes(value) ? 'bg-gray-400' : 'bg-gray-100'}`}
               >
                 {_label}

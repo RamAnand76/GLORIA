@@ -23,6 +23,7 @@ const Employees = () => {
 
   return (
     <section className="h-full overflow-hidden p-2 slideIn">
+      {/* @ts-ignore */}
       <Table
         btnLabel="Add Employee"
         rows={data?.results}

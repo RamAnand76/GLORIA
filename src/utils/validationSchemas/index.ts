@@ -19,8 +19,10 @@ const commmonStudentSchema = {
   name: Yup.string().required('Required').max(50),
   email: Yup.string().email('Enter a valid email'),
   phone_number: Yup.string()
-    .test('is-valid-phone', 'Enter a valid number', (value) =>
-      isValidNumber(value?.toString())
+    .test(
+      'is-valid-phone',
+      'Enter a valid number',
+      (value) => typeof value == 'string' && isValidNumber(value?.toString())
     )
     .required('Required'),
   place: Yup.string().max(250, 'Character limit exceeded'),

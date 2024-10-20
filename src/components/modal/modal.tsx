@@ -26,7 +26,7 @@ const Popup: React.FC<PopupProps> = ({
   return (
     <Modal isOpen={isOpen} onOpenChange={setOpen} scrollBehavior={'inside'}>
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
             <ModalBody>{children}</ModalBody>

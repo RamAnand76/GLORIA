@@ -2,7 +2,7 @@ import GetIcons from '@/assets/icons';
 import Checkbox from '@/components/checkbox';
 import Pagination from '@/components/pagination';
 import TableHeader, { TableHeaderProps } from '@/components/tableHeader';
-import { Tooltip } from '@nextui-org/react';
+import { Avatar, Tooltip } from '@nextui-org/react';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -38,7 +38,12 @@ interface TableProps<T> extends TableHeaderProps {
     action: 'delete' | 'edit' | 'view'
   ) => boolean;
 }
-const Table = <T extends { id: string }>({
+const Table = <
+  T extends {
+    profile_icon_url?: keyof T;
+    id: string;
+  },
+>({
   rows,
   id,
   colums,
@@ -299,8 +304,13 @@ const Table = <T extends { id: string }>({
                           >
                             <span>
                               {col.type === 'string'
-                                ? rowEntry[col.d_name]?.toString()
-                                : rowEntry[col.d_name] &&
+                                ? rowEntry[
+                                    col.d_name as keyof typeof rowEntry
+                                  ]?.toString()
+                                : rowEntry[
+                                    col.d_name as keyof typeof rowEntry
+                                  ] &&
+                                  //@ts-ignore
                                   moment(rowEntry[col.d_name]).format(
                                     'DD MMM YYYY, h:mm A'
                                   )}
@@ -315,22 +325,34 @@ const Table = <T extends { id: string }>({
                           >
                             <div className="flex h-full gap-3 items-center">
                               <span className="h-10 w-10 bg-[#36363626] rounded-[1.25rem] flex items-center justify-center flex-shrink-0">
+                                {/* @ts-ignore  */}
                                 {rowEntry?.profile_icon_url ? (
                                   <img
-                                    src={rowEntry?.profile_icon_url}
+                                    src={String(
+                                      rowEntry?.profile_icon_url as keyof typeof rowEntry
+                                    )}
                                     className="m-auto h-[inherit] w-[inherit] rounded-[inherit]"
                                     // alt="img"
                                   />
                                 ) : (
-                                  GetIcons(imageUrl)
+                                  <Avatar />
                                 )}
                               </span>
                               <div className="flex flex-col w-3/4">
                                 <span className="font-semibold whitespace-break-spaces overflow-hidden text-ellipsis">
-                                  {rowEntry[col.d_name]}
+                                  {String(
+                                    rowEntry[
+                                      col.d_name as keyof typeof rowEntry
+                                    ]
+                                  )}
                                 </span>
                                 <span className="font-medium text-xs text-dark-grey-faded whitespace-break-spaces overflow-hidden text-ellipsis">
-                                  {rowEntry[col.title.additional]}
+                                  {String(
+                                    rowEntry[
+                                      col.title
+                                        .additional as keyof typeof rowEntry
+                                    ]
+                                  )}
                                 </span>
                               </div>
                             </div>
@@ -345,11 +367,17 @@ const Table = <T extends { id: string }>({
                             <div
                               className={`bg-${
                                 colorMapping?.[
-                                  rowEntry[col.d_name]?.toUpperCase()
+                                  String(
+                                    rowEntry[
+                                      col.d_name as keyof typeof rowEntry
+                                    ]
+                                  )?.toUpperCase()
                                 ]
                               } px-3 py-2 text-[0.625rem] font-bold leading-3 rounded-xl w-fit uppercase`}
                             >
-                              {rowEntry[col.d_name]?.replace('_', ' ')}
+                              {String(
+                                rowEntry[col.d_name as keyof typeof rowEntry]
+                              )?.replace('_', ' ')}
                             </div>
                           </td>
                         );
@@ -359,7 +387,11 @@ const Table = <T extends { id: string }>({
                             key={index}
                             className="px-3 py-2 max-w-[250px] min-w-[12rem] border-b border-white-smoke"
                           >
-                            <Switch value={rowEntry[col.d_name]}></Switch>
+                            <Switch
+                              checked={Boolean(
+                                rowEntry[col.d_name as keyof typeof rowEntry]
+                              )}
+                            ></Switch>
                           </td>
                         );
                     })}

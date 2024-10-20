@@ -47,6 +47,10 @@ const Router = createBrowserRouter([
             element: <Dashboard />,
           },
           {
+            path: '/dashboard',
+            element: <Dashboard />,
+          },
+          {
             path: PATH.employees,
             element: <Employees />,
           },
