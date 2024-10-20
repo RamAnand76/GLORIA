@@ -200,7 +200,7 @@ const AddCollege: React.FC = (): React.JSX.Element => {
                 disabled={!dirty}
                 onClick={() => resetForm({ values: courseDetails })}
               />
-              {console.log(isSubmitting, 'is')}
+
               <Button
                 label="Submit"
                 color="success"

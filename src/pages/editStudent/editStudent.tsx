@@ -212,7 +212,9 @@ const EditStudent: React.FC = (): React.JSX.Element => {
                       name={field}
                       placeholder={field}
                       labelPlacement="outside"
+                      //@ts-ignore
                       isInvalid={touched?.[field] && !!errors?.[field]}
+                      //@ts-ignore
                       value={values?.[field]}
                       disabled={isFieldDisabled(field)}
                       onChange={handleChange}
@@ -247,6 +249,7 @@ const EditStudent: React.FC = (): React.JSX.Element => {
                         labelPlacement="outside"
                         maxRows={3}
                         disabled={isFieldDisabled(field)}
+                        //@ts-ignore
                         value={values?.[field]}
                         onChange={handleChange}
                         onBlur={handleBlur}

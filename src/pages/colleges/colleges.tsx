@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Colleges: React.FC = () => {
   const {
-    userDetails: { id, is_admin },
+    userDetails: { is_admin },
   } = useStore((state) => state);
   const navigate = useNavigate();
 
@@ -66,6 +66,7 @@ const Colleges: React.FC = () => {
   return (
     <Fragment>
       <section className="h-full overflow-hidden p-2 slideIn">
+        {/* @ts-ignore */}
         <Table
           btnLabel="Add College"
           rows={data?.results}
@@ -74,21 +75,14 @@ const Colleges: React.FC = () => {
           showingLimit={10}
           isLoading={isLoading}
           totalCount={data?.count}
-          // accOptions={studentFilterOptions}
           setCurrentPage={setPage}
-          // selectedItems={selectedFilter}
-          // setSelectedItems={handleFilterSelection}
           handleApplyButton={() => mutate()}
-          // reset={() => setSelectedFilter([])}
           onBtnClick={() => navigate(PATH.addColleges)}
           isBtnDisabled={!is_admin}
           showFilter={false}
           handleRowAction={handleStudentActions}
           checkboxSelection={true}
-          // showActions={!!selectedRowIds.length}
-          // handleHeaderAction={handleHeaderActions}
           isRowActionDisabled={isRowActionDisabled}
-          // onRowClick={onRowClick}
           showEyeBtn={false}
         />
       </section>

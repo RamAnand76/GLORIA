@@ -26,7 +26,7 @@ interface TableProps<T> extends TableHeaderProps {
   totalCount: number;
   showSerialNumber?: boolean;
   checkboxSelection?: boolean;
-  colorMapping: { [status: string]: string };
+  colorMapping?: { [status: string]: string };
   onRowClick?: (data: T) => void;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   handleRowCheck?: (e: Event) => void;
