@@ -43,7 +43,7 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
       .finally(() => setUploadingFile(false));
   };
   return (
-    <div className="h-full w-full flex flex-col gap-4 rounded-lg bg-white p-2">
+    <div className="h-full w-full flex flex-col gap-4 rounded-lg bg-white p-2 slideIn">
       <div className="bg-slate-300 p-3 rounded-md">
         <div className="flex items-center gap-4">
           <p className={file?.name && 'text-primary'}>

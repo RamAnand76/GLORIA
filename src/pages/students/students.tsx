@@ -1,18 +1,53 @@
 import Table from '@/components/table';
-import { ListStudents } from '@/services/studentService';
-import { studentColums, swrKeys } from '@/utils/constants';
-import React from 'react';
-import useSWR from 'swr';
-import { useNavigate } from 'react-router-dom';
 import PATH from '@/routes/paths';
+import { deleteStudents, ListStudents } from '@/services/studentService';
+import useStore from '@/store/store';
+import {
+  colorMapping,
+  studentColums,
+  studentFilterOptions,
+  swrKeys,
+} from '@/utils/constants';
+import { notify } from '@/utils/helpers/helpers';
+import { Fragment, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
+import Modals from '../../modals';
 
-const Employees = () => {
-  const [page, setPage] = React.useState(1);
+const Students = () => {
   const navigate = useNavigate();
+  const {
+    userDetails: { id, is_admin },
+  } = useStore((state) => state);
+  /********************************STORE************************************** */
+  const { selectedRowIds } = useStore((state) => state);
 
-  const { data, isLoading } = useSWR(
+  /******************************** REACT-HOOKS ************************************** */
+
+  const [page, setPage] = useState(1);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showAdmitStudentModal, setShowAdmitStudentModal] =
+    useState<boolean>(false);
+  const [selectedRow, setSelectedRow] = useState<IStudent>();
+
+  const [selectedFilter, setSelectedFilter] = useState<{
+    [key: string]: string[];
+  }>({});
+
+  /********************************SERVICE CALLS************************************** */
+  const { data, isLoading, mutate } = useSWR(
     `${swrKeys.STUDENTS}-${page}`,
-    () => ListStudents({ limit: 10, page }),
+    () =>
+      ListStudents({
+        limit: 10,
+        page,
+        //@ts-ignore
+        type: selectedFilter['Admission Status'] || 'all',
+        //@ts-ignore
+        id: is_admin ? '' : id,
+        //@ts-ignore
+        student_status: selectedFilter['Student Status'] || '',
+      }),
     {
       keepPreviousData: true,
       revalidateIfStale: false,
@@ -21,20 +56,107 @@ const Employees = () => {
     }
   );
 
+  const handleHeaderActions = (action: TOption) => {
+    if (action.value === 'delete') {
+      if (confirm("Only students with status 'Not accepted' will be deleted")) {
+        deleteStudents({ student_ids: selectedRowIds }).then((data) => {
+          notify(data.message, { type: 'success' });
+        });
+      }
+    }
+  };
+
+  const handleStudentDelete = () => {
+    //@ts-ignore
+    deleteStudents({ student_ids: [selectedRow?.id] }).then((value) =>
+      console.log(value)
+    );
+  };
+
+  /********************************CUSTOM METHODS************************************** */
+
+  const handleStudentActions = (action: string, rowData: IStudent) => {
+    setSelectedRow(rowData);
+    if (action === 'edit') {
+      setShowAdmitStudentModal(true);
+    } else if (action === 'delete') {
+      setShowDeleteModal(true);
+    }
+  };
+
+  const handleFilterSelection = ({
+    label,
+    value,
+  }: {
+    label: string;
+    value: string;
+  }) => {
+    setSelectedFilter((cv) => {
+      return {
+        ...cv,
+        [label]: [value],
+      };
+    });
+  };
+
+  const isRowEditDisabled = useMemo(
+    () => (_data?: IStudent, action?: 'edit' | 'delete' | 'view') => {
+      return action === 'edit' ? is_admin : false;
+    },
+    [is_admin]
+  );
+
+  const onRowClick = ({ id, is_admitted }: IStudent) => {
+    navigate(`edit-student/${id}`, { state: { id, is_admitted } });
+  };
+
   return (
-    <section className="h-full overflow-hidden p-2">
-      <Table
-        btnLabel="Add Student"
-        setPage={setPage}
-        page={page}
-        data={data}
-        rowsPerPage={10}
-        isLoading={isLoading}
-        columns={studentColums}
-        onClick={() => navigate(PATH.addStudents)}
+    <Fragment>
+      <section className="h-full overflow-hidden p-2 slideIn">
+        <Table
+          btnLabel="Add Students"
+          rows={data?.results}
+          colums={studentColums}
+          currentPage={page}
+          showingLimit={10}
+          isLoading={isLoading}
+          totalCount={data?.count}
+          accOptions={studentFilterOptions}
+          setCurrentPage={setPage}
+          selectedItems={selectedFilter}
+          setSelectedItems={handleFilterSelection}
+          handleApplyButton={() => mutate()}
+          reset={() => setSelectedFilter([])}
+          onBtnClick={() => navigate(PATH.addStudents)}
+          isBtnDisabled={!is_admin}
+          colorMapping={colorMapping}
+          showFilter={true}
+          handleRowAction={handleStudentActions}
+          checkboxSelection={true}
+          showActions={!!selectedRowIds.length}
+          handleHeaderAction={handleHeaderActions}
+          isRowActionDisabled={isRowEditDisabled}
+          onRowClick={onRowClick}
+        />
+      </section>
+      <Modals.AdmitStudentConfirmation
+        isOpen={showAdmitStudentModal}
+        //@ts-ignore
+        admittedState={{ id: selectedRow?.id, state: selectedRow?.is_admitted }}
+        setIsOpen={setShowAdmitStudentModal}
+        //@ts-ignore
+        setAdmittedState={setSelectedRow}
       />
-    </section>
+      <Modals.ConfirmationModal
+        isOpen={showDeleteModal}
+        setOpen={setShowDeleteModal}
+        // isSubmitting={}
+        content="Are sure to delete student"
+        title="Delete Students"
+        onSubmit={handleStudentDelete}
+      />
+    </Fragment>
   );
 };
 
-export default Employees;
+export default Students;

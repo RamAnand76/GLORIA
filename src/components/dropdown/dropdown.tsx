@@ -1,15 +1,7 @@
 import GetIcons from '@/assets/icons';
-import React, { useState } from 'react';
-interface MenuProps {
-  title: string;
-  /**Make dropdown as a select component. default value-false */
-  isSelectable?: boolean;
-  selectedItem?: string;
-  options: TOption[];
-  showLabel?: boolean;
-  label?: string;
-  onSelectItem: (item: TOption) => void;
-}
+import React, { useEffect, useRef, useState } from 'react';
+import { MenuProps } from '.';
+
 const Menu: React.FC<MenuProps> = ({
   title,
   options,
@@ -17,29 +9,70 @@ const Menu: React.FC<MenuProps> = ({
   selectedItem,
   isSelectable = false,
   showLabel = true,
+  containerClass,
+  menuClass,
+  isInvalid,
+  isKebabMenu = false,
+  disabled = false,
   onSelectItem,
 }) => {
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const [showMenu, setShowMenu] = useState<boolean>(false);
+
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setShowMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, []);
+
   return (
-    <div className="relative w-full">
+    <div className={`w-full relative ${containerClass}`} ref={menuRef}>
       {showLabel && <span className="mb-2 block text-small">{label}</span>}
       <button
-        className="flex h-10 w-full items-center justify-between rounded-xl bg-default-100 px-3"
-        onClick={() => setShowMenu((cv) => !cv)}
+        className={`flex text-small h-10 w-full items-center justify-between rounded-xl  px-3 ${isInvalid ? 'bg-danger-50' : 'bg-default-100'} `}
+        onClick={() => !disabled && setShowMenu((cv) => !cv)}
+        type="button"
+        disabled={disabled}
       >
-        {isSelectable ? selectedItem : title}
-        <span className="">{GetIcons('downArrow')}</span>
+        {isKebabMenu
+          ? GetIcons('kebabIcon')
+          : isSelectable
+            ? selectedItem
+            : title}
+        {!isKebabMenu && (
+          <span
+            className={`${showMenu && 'rotate-180'} ml-auto transition-transform ease-out duration-500`}
+          >
+            {GetIcons('downArrow')}
+          </span>
+        )}
       </button>
 
       <ul
         aria-label="Static Actions"
-        className={`absolute w-full origin-top transition-all duration-300 ease-in-out${
-          showMenu ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
-        }`}
-        style={{ transformOrigin: 'top' }}
+        className={`absolute text-small h-auto overflow-auto mt-1 subpixel-antialiased bg-white z-30 shadow-main rounded-lg px-4 py-2 w-full right-0 flex-col gap-1 transform transition-all duration-500 ease-in-out ${
+          showMenu ? 'flex scale-100 max-h-96' : 'hidden scale-95 max-h-0'
+        } ${menuClass}`}
+        style={{
+          transformOrigin: 'top',
+        }}
       >
         {options.map((option, index) => (
-          <li key={index} onClick={() => onSelectItem(option)}>
+          <li
+            key={index}
+            onClick={() => {
+              onSelectItem(option);
+              setShowMenu(false);
+            }}
+            className="text-nowrap cursor-pointer"
+          >
             {option.label}
           </li>
         ))}

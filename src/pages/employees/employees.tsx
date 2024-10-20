@@ -1,7 +1,7 @@
 import Table from '@/components/table';
 import PATH from '@/routes/paths';
 import { ListEmployees } from '@/services/employeeService';
-import { employeeColums, swrKeys } from '@/utils/constants';
+import { colorMapping, employeeColums, swrKeys } from '@/utils/constants';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
@@ -16,22 +16,26 @@ const Employees = () => {
     {
       keepPreviousData: true,
       revalidateIfStale: false,
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
       revalidateOnReconnect: true,
     }
   );
 
   return (
-    <section className="h-full overflow-hidden p-2">
+    <section className="h-full overflow-hidden p-2 slideIn">
       <Table
         btnLabel="Add Employee"
-        setPage={setPage}
-        page={page}
-        data={data}
-        rowsPerPage={10}
+        rows={data?.results}
+        colums={employeeColums}
+        currentPage={page}
+        showingLimit={10}
         isLoading={isLoading}
-        columns={employeeColums}
-        onClick={() => navigate(PATH.addEmployees)}
+        totalCount={data?.count}
+        setCurrentPage={setPage}
+        onBtnClick={() => navigate(PATH.addEmployees)}
+        colorMapping={colorMapping}
+        showFilter={false}
+        checkboxSelection={true}
       />
     </section>
   );

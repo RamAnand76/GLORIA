@@ -35,7 +35,9 @@
       "@/services/*": ["services/*"],
       "@/utils/*": ["utils/*"],
       "@/layouts/*": ["layouts/*"],
-      "@/context/*": ["context/*"]
+      "@/context/*": ["context/*"],
+      "@/enum/*": ["enum/*"]
+
 
 
 

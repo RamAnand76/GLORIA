@@ -14,8 +14,10 @@ const Auth: React.FC = () => {
   const handleFormSubmit = (values: ILogin) => {
     setIsLoading(true);
     Login(values)
-      .then(() => location.replace(PATH.home))
-      .catch((error) => notify(error.response.data.detail, { type: 'error' }))
+      .then(() => location.replace(PATH.dashboard))
+      .catch((error) => {
+        notify(error.response.data.message, { type: 'error' });
+      })
       .finally(() => setIsLoading(false));
   };
   return (

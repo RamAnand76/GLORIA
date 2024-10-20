@@ -29,6 +29,9 @@ body {
   scroll-behavior: smooth;
   color: rgb(var(--foreground-rgb));
   background: #dbdfe0;
+  button {
+    outline: none !important;
+  }
   @apply font-Outfit;
   @extend .slideIn;
   #root {

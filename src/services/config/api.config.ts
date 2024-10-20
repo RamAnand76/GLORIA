@@ -38,15 +38,10 @@ privateAPI.interceptors.response.use(
     const originalRequest = error.config;
 
     if (
-      [401, 400].includes(error.response.status) &&
-      originalRequest.url ===
-        `${import.meta.env.VITE_BASE_URL}/auth/validate-token`
+      error?.response &&
+      error?.response?.status === 401 &&
+      !originalRequest._retry
     ) {
-      window.location.replace('/auth');
-      return Promise.reject(error);
-    }
-
-    if ([401, 400].includes(error.response.status) && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = getLocalStorage('_rt');
       return axios
@@ -55,12 +50,12 @@ privateAPI.interceptors.response.use(
         })
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data.access);
-
             setLocalStorage({ key: '_at', value: res.data.access });
-            axios.defaults.headers.common['Authorization'] =
+            privateAPI.defaults.headers.common['Authorization'] =
               'Bearer ' + res.data.access;
-            return axios(originalRequest);
+            originalRequest.headers['Authorization'] =
+              `Bearer ${res.data.access}`;
+            return privateAPI(originalRequest);
           }
         });
     }
