@@ -1,7 +1,6 @@
 import Logo1 from '@/assets/images/LOGO_OG.jpg';
 import Button from '@/components/button';
 import Input from '@/components/input';
-import PATH from '@/routes/paths';
 import { Login } from '@/services/authService';
 import { notify } from '@/utils/helpers/helpers';
 import { AuthSchema } from '@/utils/validationSchemas';
@@ -14,7 +13,7 @@ const Auth: React.FC = () => {
   const handleFormSubmit = (values: ILogin) => {
     setIsLoading(true);
     Login(values)
-      .then(() => location.replace(PATH.dashboard))
+      .then(() => location.replace('/'))
       .catch((error) => {
         notify(error.response.data.message, { type: 'error' });
       })

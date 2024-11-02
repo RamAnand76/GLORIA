@@ -41,7 +41,7 @@ export const ListEmployeeNames = async ({
 }: IListTableData) => {
   try {
     const response = await privateAPI.get(
-      `admin/employee-list?page=${page}&page_size=${limit}?search=${search}/`
+      `admin/employee-list/?page=${page}&page_size=${limit}&search=${search}`
     );
     return response.data;
   } catch (error) {
@@ -54,6 +54,23 @@ export const GetEmployeeRanking = async ({ limit, page }: IListTableData) => {
     const response = await privateAPI.get(
       `admin/employee-ranking/?page=${page}&page_size=${limit}`
     );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const DeleteEmployee = async (id: string) => {
+  try {
+    const response = await privateAPI.delete(`admin/delete-employee/${id}/`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const EditEmployee = async (id: string, payload: IRegister) => {
+  try {
+    const response = await privateAPI.post(`/admin/edit-user/${id}/`, payload);
     return response.data;
   } catch (error) {
     handleError(error);

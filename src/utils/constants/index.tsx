@@ -5,6 +5,7 @@ export const navItems: string[] = [
   'employees',
   'students',
   'colleges',
+  'attendence-list',
 ];
 export const swrKeys = {
   EMPLOYEES: 'employees',
@@ -13,6 +14,8 @@ export const swrKeys = {
   USER_DETAILS: 'user_details',
   COLLEGES: 'colleges',
   DASHBOARD: 'dashoboard',
+  ATTENDENCE: 'attendence',
+  COURSES: 'courses',
 };
 export const employeeColums: TColumn[] = [
   { title: { label: 'FIRST NAME' }, d_name: 'first_name', type: 'string' },
@@ -31,7 +34,7 @@ export const employeeColums: TColumn[] = [
   },
   {
     title: {
-      label: 'PHONE_NUMBER',
+      label: 'PHONE NUMBER',
     },
     d_name: 'phone_number',
     type: 'string',
@@ -85,6 +88,16 @@ export const paymentModeOptions = [
   { label: 'Cash', value: 'cash' },
   { label: 'UPI', value: 'upi' },
   { label: 'Net Banking', value: 'net_banking' },
+];
+export const workModeOptions = [
+  {
+    label: 'Work From Office',
+    value: 'work_from_office',
+  },
+  {
+    label: 'Work From Home',
+    value: 'work_from_home',
+  },
 ];
 
 export const studentStatusOption = [
@@ -156,10 +169,24 @@ export const studentFilterOptions = [
   },
 ];
 
+export const attendenceOptions = [
+  {
+    label: 'Status',
+    iterables: [
+      { label: 'Absent', value: 'Absent' },
+      { label: 'Present', value: 'Present' },
+    ],
+  },
+];
+
 export const colorMapping: { [status: string]: string } = {
   PENDING: 'warning',
   ADMITTED: 'success',
   'NOT ADMITTED': 'danger',
+};
+export const colorMappingAttendence: { [status: string]: string } = {
+  PRESENT: 'success',
+  ABSENT: 'danger',
 };
 
 export const prohibittedStudentFields = [];
@@ -229,5 +256,40 @@ export const collegeColums: TColumn[] = [
     title: { label: 'BROCHURE' },
     type: 'string',
     d_name: 'brochure',
+  },
+];
+
+export const AttendenceColums: TColumn[] = [
+  {
+    title: { label: 'Name' },
+    type: 'string',
+    d_name: 'name',
+  },
+  {
+    title: { label: 'Username' },
+    type: 'string',
+    d_name: 'Username',
+  },
+  {
+    title: { label: 'Status' },
+    type: 'status',
+    d_name: 'status',
+  },
+  {
+    title: { label: 'Check In' },
+    type: 'string',
+    d_name: 'check_in_time',
+  },
+  {
+    title: { label: 'Check Out' },
+    type: 'string',
+    d_name: 'check_out_time',
+  },
+  {
+    title: {
+      label: 'Work Mode',
+    },
+    type: 'string',
+    d_name: 'work_location',
   },
 ];

@@ -17,6 +17,8 @@ const PrivateRoute = () => {
   ) {
     window.history.back();
     return;
+  } else if (!isAdmin && [PATH.dashboard].includes(rootPath)) {
+    return <Navigate to={PATH.employees} />;
   }
   return <Outlet />;
 };

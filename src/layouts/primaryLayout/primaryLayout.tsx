@@ -1,12 +1,19 @@
 import GetIcons from '@/assets/icons';
 import Header from '@/components/header';
 import Navbar from '@/components/navbar';
+import PATH from '@/routes/paths';
+import useStore from '@/store/store';
 import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/breadcrumbs';
 import { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const PrimaryLayout = () => {
+  const navigate = useNavigate();
   const location = useLocation();
+  const {
+    userDetails: { password_changed },
+  } = useStore((state) => state);
+
   const path = location.pathname.split('/').filter(Boolean);
   const [showNav, setShowBtn] = useState<boolean>(false);
 
@@ -34,7 +41,15 @@ const PrimaryLayout = () => {
             </Breadcrumbs>
           </div>
         )}
-        <div className="flex-1 w-full h-full px-2 pb-2 overflow-hidden">
+        <div className="flex-1 w-full h-full px-2 pb-2 overflow-hidden flex flex-col">
+          {!password_changed && (
+            <div
+              className="text-red-600 py-1 text-small text-center cursor-pointer"
+              onClick={() => navigate(PATH.settings)}
+            >
+              Urgent Action required: Change your password
+            </div>
+          )}
           <Outlet />
         </div>
       </div>

@@ -110,6 +110,10 @@ const Students = () => {
     navigate(`edit-student/${id}`, { state: { id, is_admitted } });
   };
 
+  const handleFilterApply = () => {
+    page === 1 ? mutate() : setPage(1);
+  };
+
   return (
     <Fragment>
       <section className="h-full overflow-hidden p-2 slideIn">
@@ -127,15 +131,18 @@ const Students = () => {
           selectedItems={selectedFilter}
           //@ts-ignore
           setSelectedItems={handleFilterSelection}
-          handleApplyButton={() => mutate()}
-          //@ts-ignore
-          reset={() => setSelectedFilter([])}
+          handleApplyButton={handleFilterApply}
+          reset={() => {
+            //@ts-ignore
+            setSelectedFilter([]);
+          }}
           onBtnClick={() => navigate(PATH.addStudents)}
           isBtnDisabled={!is_admin}
           colorMapping={colorMapping}
           showFilter={true}
           handleRowAction={handleStudentActions}
           checkboxSelection={true}
+          showEyeBtn={false}
           showActions={!!selectedRowIds.length}
           handleHeaderAction={handleHeaderActions}
           isRowActionDisabled={isRowEditDisabled}
@@ -154,8 +161,8 @@ const Students = () => {
         isOpen={showDeleteModal}
         setOpen={setShowDeleteModal}
         // isSubmitting={}
-        content="Are sure to delete student"
-        title="Delete Students"
+        content="Are sure to delete student?"
+        title="Delete Student"
         onSubmit={handleStudentDelete}
       />
     </Fragment>

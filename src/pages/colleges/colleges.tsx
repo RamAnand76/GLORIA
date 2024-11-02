@@ -1,13 +1,17 @@
 import Table from '@/components/table';
-import { DeleteCollege, ListColleges } from '@/services/collegeService';
+import PATH from '@/routes/paths';
+import {
+  DeleteCollege,
+  ListColleges,
+  ListCourses,
+} from '@/services/collegeService';
 import useStore from '@/store/store';
 import { collegeColums, swrKeys } from '@/utils/constants';
-import React, { Fragment, useMemo, useState } from 'react';
+import { notify } from '@/utils/helpers/helpers';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import Modals from '../../modals';
-import { notify } from '@/utils/helpers/helpers';
-import PATH from '@/routes/paths';
-import { useNavigate } from 'react-router-dom';
 
 const Colleges: React.FC = () => {
   const {
@@ -16,7 +20,17 @@ const Colleges: React.FC = () => {
   const navigate = useNavigate();
 
   const [page, setPage] = useState(1);
+  const [collegeName, setCollegeName] = useState<string>('');
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [filterOptions, setFilterOptions] = useState<
+    {
+      label: string;
+      iterables: TOption[];
+    }[]
+  >();
+  const [selectedFilter, setSelectedFilter] = useState<{
+    [key: string]: string[];
+  }>({});
 
   /********************************STORE************************************** */
   const { selectedRowIds, setSelectedRowIds } = useStore((state) => state);
@@ -24,7 +38,12 @@ const Colleges: React.FC = () => {
   /********************************SERVICE CALLS************************************** */
   const { data, isLoading, mutate } = useSWR(
     `${swrKeys.COLLEGES}-${page}`,
-    () => ListColleges(),
+    () => {
+      return ListColleges({
+        college: collegeName,
+        course: selectedFilter?.Courses?.join(),
+      });
+    },
     {
       keepPreviousData: true,
       revalidateIfStale: false,
@@ -32,6 +51,10 @@ const Colleges: React.FC = () => {
       revalidateOnReconnect: true,
     }
   );
+
+  useEffect(() => {
+    mutate();
+  }, [collegeName]);
 
   const handleCollegeDelete = () => {
     DeleteCollege(selectedRowIds)
@@ -44,6 +67,24 @@ const Colleges: React.FC = () => {
       });
   };
 
+  const {} = useSWR(
+    `${swrKeys.COURSES}`,
+    async () => {
+      const resp = await ListCourses();
+      setFilterOptions(() => [
+        {
+          label: 'Courses',
+          iterables: resp?.map((v: string) => ({ label: v, value: v })),
+        },
+      ]);
+    },
+    {
+      keepPreviousData: true,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+    }
+  );
   /********************************CUSTOM METHODS************************************** */
 
   const handleStudentActions = (action: string, rowData: ICollege) => {
@@ -54,14 +95,22 @@ const Colleges: React.FC = () => {
       setShowDeleteModal(true);
     }
   };
+  const handleFilterSelection = ({
+    label,
+    value,
+  }: {
+    label: string;
+    value: string;
+  }) => {
+    setSelectedFilter((cv) => {
+      return {
+        ...cv,
+        [label]: [value],
+      };
+    });
+  };
 
-  const isRowActionDisabled = useMemo(
-    //@ts-ignore
-    () => (_data?: ICollege, action: 'edit' | 'delete' | 'view') => {
-      return ['edit', 'delete'].includes(action) ? !is_admin : false;
-    },
-    [is_admin]
-  );
+  console.log(selectedFilter);
 
   return (
     <Fragment>
@@ -79,11 +128,25 @@ const Colleges: React.FC = () => {
           handleApplyButton={() => mutate()}
           onBtnClick={() => navigate(PATH.addColleges)}
           isBtnDisabled={!is_admin}
-          showFilter={false}
+          showFilter={true}
           handleRowAction={handleStudentActions}
           checkboxSelection={true}
-          isRowActionDisabled={isRowActionDisabled}
+          showEditBtn={is_admin}
+          showDeleteBtn={is_admin}
           showEyeBtn={false}
+          isSearchable={true}
+          searchValue={collegeName}
+          setSearchValue={setCollegeName}
+          accOptions={filterOptions}
+          //@ts-ignore
+          selectedItems={selectedFilter}
+          //@ts-ignore
+          setSelectedItems={handleFilterSelection}
+          reset={() => {
+            //@ts-ignore
+            setSelectedFilter([]);
+            mutate();
+          }}
         />
       </section>
       <Modals.ConfirmationModal

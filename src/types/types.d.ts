@@ -21,3 +21,27 @@ type TAdmittedStudent = {
 };
 
 type TOption = { label: string; value: string };
+type TNewNotification = {
+  notification_message: string;
+  message_id?: string;
+};
+
+type TAttendenceList = {
+  username: string;
+  date?: string;
+  start_date?: string;
+  end_date?: string;
+  status: string;
+  count: string;
+  page: number;
+};
+
+type TResetPassword = {
+  new_password: string;
+  confirm_password: string;
+  otp: string;
+};
+
+type TPasswordResetPage = {
+  email: string;
+} & TResetPassword;
