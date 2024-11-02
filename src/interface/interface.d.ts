@@ -9,6 +9,7 @@ interface IRegister {
   phone_number: string;
   is_admin: boolean;
   is_employee: boolean;
+  work_location?: string;
 }
 interface IListTableData {
   page: number;
@@ -27,6 +28,8 @@ interface IEmployee {
   first_name: string;
   last_name: string;
   is_employee: boolean;
+  work_location: string;
+  is_admin: boolean;
 }
 interface IBulkRegister_R {
   download_link: string;
@@ -90,6 +93,10 @@ interface IUserDetails {
   last_name: string;
   phone_number: string;
   username: string;
+  checked_in: boolean;
+  checked_out: boolean;
+  work_location: string;
+  password_changed: boolean;
 }
 interface IAddCollege {
   college_name: string;
@@ -111,4 +118,30 @@ interface IDashboardEmployee {
   number_of_admitted_students: number;
   last_admitted_student_at: string;
   profile_photo: string;
+}
+
+interface INotification {
+  id: string;
+  notification_message: string;
+  created_at?: Date;
+  updated_at: Date;
+  created_by_full_name?: string;
+}
+
+interface ILocationDetails {
+  center_latitude: number | null;
+  center_longitude: number | null;
+  radius: number | null;
+}
+
+interface ICheckInDetails {
+  check_in_location: string;
+  check_in_time: string | null;
+  check_out_location: string | null;
+  check_out_time: null | string;
+  name: string;
+  status: string;
+  user_id: string;
+  username: string;
+  work_location: string;
 }

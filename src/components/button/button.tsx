@@ -9,7 +9,7 @@ interface ButtonProps extends BaseButtonProps {
 const Button: React.FC<ButtonProps> = ({ label, ...rest }) => {
   return (
     <ButtonComp
-      className={`font-medium text-white h-9 rounded-[20px] ${rest.className}`}
+      className={`font-medium text-white h-9 rounded-[20px] px-5 ${rest.className}`}
       {...rest}
     >
       {label}

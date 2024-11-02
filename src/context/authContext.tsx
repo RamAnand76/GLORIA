@@ -1,7 +1,7 @@
 import { GetUserDetails, ValidateToken } from '@/services/authService';
 import useStore from '@/store/store';
 import { swrKeys } from '@/utils/constants';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import useSWR from 'swr';
 export interface AuthContextProps {
   isValidUser: boolean | null;
@@ -17,9 +17,6 @@ const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     valid_token: boolean | null;
     is_admin: boolean;
   }>({ valid_token: null, is_admin: false });
-  useEffect(() => {
-    ValidateToken().then((value) => setIsTokenData(value));
-  }, []);
 
   const { isLoading } = useSWR(
     `${swrKeys.USER_DETAILS}`,
@@ -34,8 +31,25 @@ const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
       revalidateOnMount: true,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      onSuccess: () => ValidateToken().then((value) => setIsTokenData(value)),
     }
   );
+  //  const eventSource = new EventSource(
+  //     `${import.meta.env.VITE_BASE_URL}/employee/notification-check/`
+  //   );
+  // useEffect(() => {
+  //   connectToEventSource();
+
+  //   return () => {
+  //     eventSource.close();
+  //   };
+  // }, []);
+
+  // const connectToEventSource = () => {
+  //   eventSource.onmessage = (event) => {
+  //     console.log('New data:', event);
+  //   };
+  // };
 
   const values = {
     isValidUser: tokenData.valid_token,

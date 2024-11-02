@@ -30,7 +30,11 @@ export const Navbar: React.FC<{
       </div>
       <nav className="flex flex-col gap-2 py-8 px-6 space-y-2 text-white">
         {navItems
-          .filter((_item) => isAdmin || _item !== 'employees')
+          .filter(
+            (_item) =>
+              isAdmin ||
+              !['employees', 'dashboard', 'attendence-list'].includes(_item)
+          )
           .map((item, index: number) => (
             <span
               className={`px-2 py-1 flex gap-4 items-center text-[#e2e8ee] capitalize cursor-pointer ${item === activePath && 'bg-[#4a5d67] rounded-lg'}`}
@@ -40,7 +44,8 @@ export const Navbar: React.FC<{
                 navigate(`/${item}`);
               }}
             >
-              {GetIcons(item)} <span>{item}</span>
+              {/*@ts-ignore  */}
+              {GetIcons(item)} <span>{item.replaceAll('-', ' ')}</span>
             </span>
           ))}
       </nav>

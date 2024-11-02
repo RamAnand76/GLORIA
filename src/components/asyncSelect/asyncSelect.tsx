@@ -25,7 +25,9 @@ const AsyncSelect: React.FC<AsyncSelectProps> = ({ label, ...props }) => {
       <AsyncPaginate
         {...props}
         classNames={{
-          control: () => '!border-0 !rounded-lg',
+          menu: () => '!z-50 !text-small',
+          control: () =>
+            '!border-0 !rounded-lg !shadow-none !bg-default-100 text-small !rounded-xl',
           placeholder: () => '!text-base',
         }}
       />

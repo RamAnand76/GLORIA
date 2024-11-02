@@ -20,6 +20,10 @@ const appStore = (
     last_name: '',
     phone_number: '',
     username: '',
+    checked_in: false,
+    checked_out: false,
+    work_location: '',
+    password_changed: true,
   },
   selectedRowIds: [],
   courseDetails: {

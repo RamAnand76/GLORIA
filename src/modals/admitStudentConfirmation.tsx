@@ -29,7 +29,7 @@ const AdmitStudentConfirmation: React.FC<AdmitStudentConfirmationProps> = ({
       .then(() => {
         setIsOpen(false);
         navigate(`edit-student/${admittedState.id}`, {
-          state: admittedState.id,
+          state: { id: admittedState.id },
         });
       })
       .finally(() => setIsFormSubmitting(false));

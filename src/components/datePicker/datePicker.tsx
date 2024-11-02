@@ -1,14 +1,23 @@
-import { DatePicker as App, DatePickerProps } from '@nextui-org/react';
-
-const DatePicker: React.FC<DatePickerProps> = (props) => {
+import React from 'react';
+import DatePicker, { DatePickerProps } from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+interface CalenderProps {
+  label: string;
+}
+const Calender: React.FC<CalenderProps & DatePickerProps> = ({ ...props }) => {
   return (
-    <App
-      label="Birth date"
-      className="max-w-[284px]"
-      labelPlacement="outside"
-      {...props}
-    />
+    <div className="flex flex-col gap-1">
+      <span>{props.label}</span>
+      <DatePicker
+        showIcon={true}
+        className="bg-default-100 text-small rounded-xl !p-2 h-10 outline-none"
+        calendarIconClassName="top-[6px] right-0"
+        wrapperClassName="w-fit"
+        popperClassName="z-50"
+        {...props}
+      />
+    </div>
   );
 };
 
-export default DatePicker;
+export default Calender;

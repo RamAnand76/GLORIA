@@ -1,13 +1,20 @@
 import GetIcons from '@/assets/icons';
 import Button from '@/components/button';
 import CheckBox from '@/components/checkbox/checkbox';
+import Menu from '@/components/dropdown';
 import Input from '@/components/input';
-import { BulkRegister, Register } from '@/services/employeeService';
+import {
+  BulkRegister,
+  EditEmployee,
+  Register,
+} from '@/services/employeeService';
 import useStore from '@/store/store';
+import { workModeOptions } from '@/utils/constants';
 import { notify } from '@/utils/helpers/helpers';
 import { NewEmployeeSchema } from '@/utils/validationSchemas';
 import { Formik, FormikHelpers } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 /**
  * @namespace {AddEmployee}
@@ -15,9 +22,27 @@ import React, { useState } from 'react';
  * @returns {React.JSX.Element}
  */
 const AddEmployee: React.FC = (): React.JSX.Element => {
+  const params = useParams();
+
   const [file, setFile] = useState<File | undefined>(undefined);
   const [uploadingFile, setUploadingFile] = useState<boolean>(false);
   const { bulkRegisterData, setBulkRegisterData } = useStore((state) => state);
+  const [initialValues, setInitialValues] = useState<IRegister>({
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_number: '',
+    is_admin: false,
+    is_employee: true,
+    work_location: '',
+  });
+
+  useEffect(() => {
+    if (params?.id) {
+      setInitialValues(JSON.parse(localStorage.getItem('emp') ?? `{}`));
+    }
+    return () => localStorage.removeItem('emp');
+  }, []);
 
   /**
    * @function handleEmployeeRegister
@@ -28,10 +53,17 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
     values: IRegister,
     actions: FormikHelpers<IRegister>
   ) => {
-    Register(values).then((resp) => {
-      notify(resp.message, { type: 'success' });
-      actions.resetForm();
-    });
+    if (params?.id) {
+      EditEmployee(params?.id, values).then((resp) => {
+        notify(resp.message, { type: 'success' });
+        actions.resetForm();
+      });
+    } else {
+      Register(values).then((resp) => {
+        notify(resp.message, { type: 'success' });
+        actions.resetForm();
+      });
+    }
   };
 
   const handleBulkRegister = async () => {
@@ -42,6 +74,7 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
       .then((resp) => setBulkRegisterData(resp))
       .finally(() => setUploadingFile(false));
   };
+
   return (
     <div className="h-full w-full flex flex-col gap-4 rounded-lg bg-white p-2 slideIn">
       <div className="bg-slate-300 p-3 rounded-md">
@@ -97,16 +130,10 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
         )}
       </div>
       <Formik
-        initialValues={{
-          first_name: '',
-          last_name: '',
-          email: '',
-          phone_number: '',
-          is_admin: false,
-          is_employee: true,
-        }}
+        initialValues={initialValues}
         onSubmit={handleEmployeeRegister}
         validationSchema={NewEmployeeSchema}
+        enableReinitialize
       >
         {({
           values,
@@ -117,6 +144,7 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
           resetForm,
           handleBlur,
           handleSubmit,
+          setFieldValue,
         }) => (
           <form
             className="grid md:grid-cols-2 grid-col-1 gap-4 gap-y-8 p-4"
@@ -132,6 +160,7 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
+
             <Input
               label="Last Name*"
               name="last_name"
@@ -162,7 +191,28 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            <CheckBox checked={values.is_admin}>Make Admin</CheckBox>
+            <Menu
+              label={'Work Location'}
+              options={workModeOptions}
+              onSelectItem={({ value }) =>
+                setFieldValue('work_location', value)
+              }
+              menuClass="w-full"
+              isSelectable={true}
+              selectedItem={
+                workModeOptions.find(
+                  (options: { value: any }) =>
+                    options.value === values?.work_location
+                )?.label
+              }
+            />
+            <CheckBox
+              isSelected={values.is_admin}
+              className="self-end mb-1"
+              onChange={(e) => setFieldValue('is_admin', e.target.checked)}
+            >
+              Make Admin
+            </CheckBox>
             <div className="flex items-center gap-3 col-span-2">
               <Button
                 label="Discard"

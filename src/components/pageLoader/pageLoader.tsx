@@ -1,16 +1,19 @@
-import { Vortex } from 'react-loader-spinner';
+import { RotatingLines } from 'react-loader-spinner';
 
 const PageLoader = () => {
   return (
     <div className="flex justify-center items-center h-full w-full">
-      <Vortex
+      <RotatingLines
         visible={true}
+        //@ts-ignore
         height="80"
         width="80"
-        ariaLabel="vortex-loading"
+        strokeColor="#07283b"
+        strokeWidth="5"
+        animationDuration="0.75"
+        ariaLabel="rotating-lines-loading"
         wrapperStyle={{}}
-        wrapperClass="vortex-wrapper"
-        colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
+        wrapperClass=""
       />
     </div>
   );

@@ -1,6 +1,7 @@
 import GetIcons from '@/assets/icons';
 import AsyncSelect from '@/components/asyncSelect';
 import Button from '@/components/button';
+import DatePicker from '@/components/datePicker';
 import Menu from '@/components/dropdown';
 import Input from '@/components/input';
 import TextArea from '@/components/textArea';
@@ -16,7 +17,9 @@ import {
   swrKeys,
 } from '@/utils/constants';
 import { notify } from '@/utils/helpers/helpers';
+import { editStudentValidationSchema } from '@/utils/validationSchemas';
 import { FieldArray, Formik, FormikHelpers } from 'formik';
+import moment from 'moment';
 import React, { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import useSWR from 'swr';
@@ -72,7 +75,17 @@ const EditStudent: React.FC = (): React.JSX.Element => {
           {}
         );
 
-        formData.set('student_response', JSON.stringify(formated));
+        formated && formData.set('student_response', JSON.stringify(formated));
+      } else if (
+        field === 'staff_assigned_full_name' ||
+        //@ts-ignore
+        values[field] === null ||
+        field === 'admitted_by'
+      ) {
+        return;
+      } else if (field === 'date_of_payment') {
+        //@ts-ignore
+        formData.set(field, values[field].replaceAll('/', '-'));
       } else {
         //@ts-ignore
         formData.set(field, values[field]);
@@ -106,18 +119,31 @@ const EditStudent: React.FC = (): React.JSX.Element => {
       revalidateOnReconnect: true,
     }
   );
-  //@ts-ignore
-  const loadOptions = async (search: string, _loadedOptions, { page }) => {
-    const response = await ListEmployeeNames({ limit: 30, page, search });
-    console.log(response);
 
-    return {
-      options: [],
-      hasMore: [],
-      additional: {
-        page: page + 1,
-      },
-    };
+  const loadOptions = async (
+    search: string,
+    _loadedOptions: any,
+    { page }: any
+  ) => {
+    try {
+      const response = await ListEmployeeNames({ limit: 3, page, search });
+
+      return {
+        options: response.results.map(
+          ({ name: label, id: value }: { name: string; id: string }) => ({
+            label,
+            value,
+          })
+        ),
+        hasMore: Math.ceil(response.count / 3) > page,
+        additional: {
+          page: page + 1,
+        },
+      };
+    } catch (error) {
+      console.error('Failed to load options:', error);
+      return { options: [], hasMore: false };
+    }
   };
 
   /*******************************CUSTOM METHODS********************************************* */
@@ -138,7 +164,8 @@ const EditStudent: React.FC = (): React.JSX.Element => {
       e.target.value = '';
       return;
     }
-    setFieldValue(field, e?.target?.files?.[0]);
+    const file = e?.target?.files?.[0] || null;
+    setFieldValue(field, file);
   };
 
   return (
@@ -168,7 +195,7 @@ const EditStudent: React.FC = (): React.JSX.Element => {
           }
         }
         onSubmit={handleEmployeeRegister}
-        // validationSchema={NewEmployeeSchema}
+        validationSchema={editStudentValidationSchema}
         enableReinitialize={true}
       >
         {({
@@ -233,7 +260,6 @@ const EditStudent: React.FC = (): React.JSX.Element => {
                       ...basicInfo,
                       ...docFields,
                       'id',
-                      'date_of_payment',
                       'staff_assigned',
                       'admitted_by',
                       'student_response',
@@ -294,6 +320,32 @@ const EditStudent: React.FC = (): React.JSX.Element => {
                         isDisabled={!is_admin}
                         //@ts-ignore
                         label={field.replaceAll('_', ' ')}
+                        additional={{ page: 1 }}
+                        value={{
+                          label: values?.[field],
+                          //@ts-ignore
+                          value: values?.['staff_assigned'],
+                        }}
+                        onChange={(e) => {
+                          setFieldValue('staff_assigned', e?.value);
+                          setFieldValue('staff_assigned_full_name', e?.label);
+                        }}
+                      />
+                    );
+                  } else if (field === 'date_of_payment') {
+                    return (
+                      <DatePicker
+                        dateFormat="dd/MM/yyyy"
+                        label="Date of Payment"
+                        selected={
+                          values[field] ? new Date(values[field]) : new Date()
+                        }
+                        onChange={(date) =>
+                          setFieldValue(
+                            field,
+                            moment(date).format('YYYY/MM/DD')
+                          )
+                        }
                       />
                     );
                   }
@@ -317,52 +369,55 @@ const EditStudent: React.FC = (): React.JSX.Element => {
                   );
                 })}
             </section>
-            <FieldArray
-              name="student_response"
-              render={(arrayHelpers) => (
-                <>
-                  <h5 className="font-bold text-primary border-b py-1">
-                    Student Response
-                  </h5>
-                  <div>
-                    <button
-                      type="button"
-                      className="text-primary text-base py-1 flex gap-2 items-center"
-                      onClick={() => arrayHelpers.push('')}
-                    >
-                      Add new response {GetIcons('add')}
-                    </button>
 
-                    <section className="grid grid-cols-1 gap-4 gap-y-8 md:grid-cols-2">
-                      {values?.['student_response']?.map(
-                        (calls: string, _ind: number) => (
-                          <div className="flex gap-2 w-full" key={_ind}>
-                            <TextArea
-                              key={_ind}
-                              label={`calls ${_ind + 1}`}
-                              name={`student_response.${_ind}`}
-                              labelPlacement="outside"
-                              maxRows={3}
-                              disabled={isFieldDisabled('student_response')}
-                              value={calls}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              containerClass="w-full"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => arrayHelpers.remove(_ind)}
-                            >
-                              {GetIcons('delete')}
-                            </button>
-                          </div>
-                        )
-                      )}
-                    </section>
-                  </div>
-                </>
-              )}
-            ></FieldArray>
+            {!location.state?.is_admitted && (
+              <FieldArray
+                name="student_response"
+                render={(arrayHelpers) => (
+                  <>
+                    <h5 className="font-bold text-primary border-b py-1">
+                      Student Response
+                    </h5>
+                    <div>
+                      <button
+                        type="button"
+                        className="text-primary text-base py-1 flex gap-2 items-center"
+                        onClick={() => arrayHelpers.push('')}
+                      >
+                        Add new response {GetIcons('add')}
+                      </button>
+
+                      <section className="grid grid-cols-1 gap-4 gap-y-8 md:grid-cols-2">
+                        {values?.['student_response']?.map(
+                          (calls: string, _ind: number) => (
+                            <div className="flex gap-2 w-full" key={_ind}>
+                              <TextArea
+                                key={_ind}
+                                label={`calls ${_ind + 1}`}
+                                name={`student_response.${_ind}`}
+                                labelPlacement="outside"
+                                maxRows={3}
+                                disabled={isFieldDisabled('student_response')}
+                                value={calls}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                containerClass="w-full"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => arrayHelpers.remove(_ind)}
+                              >
+                                {GetIcons('delete')}
+                              </button>
+                            </div>
+                          )
+                        )}
+                      </section>
+                    </div>
+                  </>
+                )}
+              ></FieldArray>
+            )}
             {location.state?.is_admitted && (
               <>
                 <h5 className="font-bold text-primary border-b py-1">
@@ -376,7 +431,7 @@ const EditStudent: React.FC = (): React.JSX.Element => {
                   {Object.keys(values)
                     .filter((field) => docFields.includes(field))
                     .map((field, index) => (
-                      <div>
+                      <div className="flex flex-col gap-2">
                         <label
                           key={index}
                           htmlFor={field}
@@ -384,23 +439,37 @@ const EditStudent: React.FC = (): React.JSX.Element => {
                         >
                           {field.replace('_', ' ')}
                         </label>
+                        {/*@ts-ignore  */}
+                        {values[field] && (
+                          <a
+                            href={`${import.meta.env.VITE_BASE_URL}/${values?.[field as keyof typeof values]}`}
+                            target="_blank"
+                            className="text-blue-600"
+                          >
+                            Click to view
+                          </a>
+                        )}
                         <input
                           type="file"
                           name={field}
                           id={field}
                           className="font-medium p-2 border-1 rounded-lg cursor-pointer text-primary flex gap-2 items-center"
-                          accept=".pdf,.jpg,.jpeg"
+                          accept={
+                            field === 'passport_photo'
+                              ? '.jpg,.jpeg'
+                              : '.pdf,.jpg,.jpeg'
+                          }
                           onChange={(e) =>
                             handleFileUpload(e, field, setFieldValue)
                           }
                           onBlur={handleBlur}
+                          disabled={isFieldDisabled(field)}
                         />
                       </div>
                     ))}
                 </section>
               </>
             )}
-
             <div className="col-span-2 flex items-center gap-3">
               <Button
                 label="Discard"

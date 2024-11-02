@@ -91,5 +91,6 @@ export const updateStudent = async ({
     return response.data;
   } catch (error) {
     handleError(error);
+    return Promise.reject();
   }
 };
