@@ -23,10 +23,10 @@ const Dashboard: React.FC = () => {
 
   return (
     <section className="p-4 h-full overflow-hidden flex flex-col gap-3">
-      <div className="flex-">
-        <div className=" grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-3 overflow-auto">
+      <div className="flex-1 overflow-auto pr-1">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-3">
           {data?.results?.map((employee: IDashboardEmployee, index: number) => (
-            <Card className="py-4" key={index}>
+            <Card className="py-4 !shadow-none" key={index}>
               <CardHeader className="flex items-center gap-3 py-2">
                 {!employee?.profile_photo ? (
                   <Avatar classNames={{ base: 'block shrink-0' }} />

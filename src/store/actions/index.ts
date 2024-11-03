@@ -36,8 +36,8 @@ const appStore = (
   setCourseDetails: (data: IAddCollege) => {
     set(() => ({ courseDetails: data }));
   },
-  setSelectedRowIds: (ids: string[]) => {
-    set(() => ({ selectedRowIds: ids }));
+  setSelectedRowIds: (idObj: { [page: number]: string[] }) => {
+    set(() => ({ selectedRowIds: idObj }));
   },
   setBulkRegisterData: (data: IBulkRegister_R) =>
     set(() => ({ bulkRegisterData: data })),

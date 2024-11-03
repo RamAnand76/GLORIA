@@ -76,7 +76,7 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col gap-4 rounded-lg bg-white p-2 slideIn">
+    <div className="h-full w-full flex flex-col gap-4 rounded-lg bg-white p-2 slideIn overflow-auto">
       <div className="bg-slate-300 p-3 rounded-md">
         <div className="flex items-center gap-4">
           <p className={file?.name && 'text-primary'}>
@@ -147,7 +147,7 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
           setFieldValue,
         }) => (
           <form
-            className="grid md:grid-cols-2 grid-col-1 gap-4 gap-y-8 p-4"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4"
             onSubmit={handleSubmit}
           >
             <Input
@@ -213,7 +213,7 @@ const AddEmployee: React.FC = (): React.JSX.Element => {
             >
               Make Admin
             </CheckBox>
-            <div className="flex items-center gap-3 col-span-2">
+            <div className="flex items-center gap-3 col-span-1 lg:col-span-2">
               <Button
                 label="Discard"
                 color="danger"

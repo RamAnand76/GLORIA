@@ -58,7 +58,7 @@ const Menu: React.FC<MenuProps> = ({
       <ul
         aria-label="Static Actions"
         className={`absolute text-small h-auto overflow-auto mt-1 subpixel-antialiased bg-white z-30 shadow-main rounded-lg px-4 py-2 w-full right-0 flex-col gap-1 transform transition-all duration-500 ease-in-out ${
-          showMenu ? 'flex scale-100 max-h-96' : 'hidden scale-95 max-h-0'
+          showMenu ? 'flex scale-100 max-h-60' : 'hidden scale-95 max-h-0'
         } ${menuClass}`}
         style={{
           transformOrigin: 'top',

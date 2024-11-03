@@ -1,6 +1,7 @@
 import Popup from '@/components/modal/modal';
 import Switch from '@/components/switch';
 import { admitStudents } from '@/services/studentService';
+import { notify } from '@/utils/helpers/helpers';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,15 +25,19 @@ const AdmitStudentConfirmation: React.FC<AdmitStudentConfirmationProps> = ({
    * @description on admitting student , navigate to student details to update details
    */
   const handleAdmitStudent = () => {
-    setIsFormSubmitting(true);
-    admitStudents(admittedState.id)
-      .then(() => {
-        setIsOpen(false);
-        navigate(`edit-student/${admittedState.id}`, {
-          state: { id: admittedState.id },
-        });
-      })
-      .finally(() => setIsFormSubmitting(false));
+    if (!admittedState.state) {
+      setIsFormSubmitting(true);
+      admitStudents(admittedState.id)
+        .then(() => {
+          setIsOpen(false);
+          navigate(`edit-student/${admittedState.id}`, {
+            state: { id: admittedState.id },
+          });
+        })
+        .finally(() => setIsFormSubmitting(false));
+    } else {
+      notify('Student is already admitted', { type: 'warning' });
+    }
   };
 
   return (

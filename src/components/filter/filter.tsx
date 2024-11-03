@@ -66,6 +66,7 @@ const Filter: React.FC<FilterProps> = ({
               onClick={() => {
                 setIsFilterActive(true);
                 handleApplyButton();
+                setOpenFilter(false);
               }}
             />
           </footer>

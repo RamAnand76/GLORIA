@@ -29,7 +29,7 @@ const Students = () => {
   const [showAdmitStudentModal, setShowAdmitStudentModal] =
     useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<IStudent>();
-
+  const [isDltLoading, setIsDltLoading] = useState<boolean>(false);
   const [selectedFilter, setSelectedFilter] = useState<{
     [key: string]: string[];
   }>({});
@@ -59,7 +59,12 @@ const Students = () => {
   const handleHeaderActions = (action: TOption) => {
     if (action.value === 'delete') {
       if (confirm("Only students with status 'Not accepted' will be deleted")) {
-        deleteStudents({ student_ids: selectedRowIds }).then((data) => {
+        deleteStudents({
+          student_ids: Object.keys(selectedRowIds).flatMap(
+            // @ts-ignore
+            (item) => selectedRowIds[item]
+          ),
+        }).then((data) => {
           notify(data.message, { type: 'success' });
         });
       }
@@ -67,10 +72,11 @@ const Students = () => {
   };
 
   const handleStudentDelete = () => {
+    setIsDltLoading(true);
     //@ts-ignore
-    deleteStudents({ student_ids: [selectedRow?.id] }).then((value) =>
-      console.log(value)
-    );
+    deleteStudents({ student_ids: [selectedRow?.id] })
+      .then((value) => notify(value, { type: 'success' }))
+      .finally(() => setIsDltLoading(false));
   };
 
   /********************************CUSTOM METHODS************************************** */
@@ -111,8 +117,15 @@ const Students = () => {
   };
 
   const handleFilterApply = () => {
-    page === 1 ? mutate() : setPage(1);
+    page === 1 ? mutate(true) : setPage(1);
   };
+
+  const showActions = useMemo(() => {
+    return Object.keys(selectedRowIds)?.some(
+      //@ts-ignore
+      (key) => selectedRowIds[key]?.length > 0
+    );
+  }, [page, selectedRowIds]);
 
   return (
     <Fragment>
@@ -143,7 +156,7 @@ const Students = () => {
           handleRowAction={handleStudentActions}
           checkboxSelection={true}
           showEyeBtn={false}
-          showActions={!!selectedRowIds.length}
+          showActions={showActions}
           handleHeaderAction={handleHeaderActions}
           isRowActionDisabled={isRowEditDisabled}
           onRowClick={onRowClick}
@@ -160,7 +173,7 @@ const Students = () => {
       <Modals.ConfirmationModal
         isOpen={showDeleteModal}
         setOpen={setShowDeleteModal}
-        // isSubmitting={}
+        isSubmitting={isDltLoading}
         content="Are sure to delete student?"
         title="Delete Student"
         onSubmit={handleStudentDelete}

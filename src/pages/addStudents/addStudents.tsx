@@ -32,6 +32,7 @@ const AddStudents: React.FC = (): React.JSX.Element => {
     AddStudentApi(values).then((resp) => {
       notify(resp.message, { type: 'success' });
       actions.resetForm();
+      actions.setFieldValue('phone_number', '');
     });
   };
 
@@ -106,9 +107,10 @@ const AddStudents: React.FC = (): React.JSX.Element => {
           handleSubmit,
         }) => (
           <form
-            className="grid grid-cols-1 gap-4 gap-y-8 p-4 md:grid-cols-2 overflow-auto"
+            className="grid grid-cols-1 gap-4 gap-y-8 p-4 lg:grid-cols-2 overflow-auto"
             onSubmit={handleSubmit}
           >
+            {console.log({ values })}
             <Input
               label="Name*"
               name="name"
@@ -122,7 +124,7 @@ const AddStudents: React.FC = (): React.JSX.Element => {
             />
 
             <Input
-              label="Email"
+              label="Email*"
               name="email"
               labelPlacement="outside"
               placeholder="Email"
@@ -137,6 +139,7 @@ const AddStudents: React.FC = (): React.JSX.Element => {
               label="Phone Number*"
               name="phone_number"
               onBlur={handleBlur}
+              value={values.phone_number}
               error={errors.phone_number}
               isInvalid={touched.phone_number && !!errors.phone_number}
               handleChange={(value) => setFieldValue('phone_number', value)}
@@ -164,7 +167,7 @@ const AddStudents: React.FC = (): React.JSX.Element => {
               onBlur={handleBlur}
             />
 
-            <div className="col-span-2 flex items-center gap-3">
+            <div className="col-span-1 lg:col-span-2 flex items-center gap-3">
               <Button
                 label="Discard"
                 color="danger"

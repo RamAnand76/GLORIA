@@ -1,3 +1,4 @@
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import * as Yup from 'yup';
 
 export const AuthSchema = Yup.object({
@@ -16,13 +17,11 @@ export const NewEmployeeSchema = Yup.object({
 
 const commmonStudentSchema = {
   name: Yup.string().required('Required').max(50),
-  email: Yup.string().email('Enter a valid email'),
+  email: Yup.string().email('Enter a valid email').required('Required'),
   phone_number: Yup.string()
-    // .test(
-    //   'is-valid-phone',
-    //   'Enter a valid number',
-    //   (value) => typeof value == 'string' && isValidNumber(value?.toString())
-    // )
+    .test('is-valid-phone', 'Enter a valid number', (value) => {
+      return typeof value == 'string' && isValidPhoneNumber(value);
+    })
     .required('Required'),
   place: Yup.string().max(250, 'Character limit exceeded'),
   course: Yup.string().max(100),
@@ -31,6 +30,7 @@ export const AddStudentSchema = Yup.object(commmonStudentSchema);
 
 export const editStudentValidationSchema = Yup.object().shape({
   ...commmonStudentSchema,
+  phone_number: Yup.string().required(),
   approval_status: Yup.string().oneOf(
     ['approved', 'not_approved'],
     'Invalid approval status'
@@ -40,9 +40,10 @@ export const editStudentValidationSchema = Yup.object().shape({
     'Invalid course status'
   ),
   admin_messages: Yup.string().nullable(), // Can be null
-  mode_of_payment: Yup.string()
-    .oneOf(['upi', 'cash', 'net_banking'], 'Invalid mode of payment')
-    .required('Mode of payment value is required'),
+  mode_of_payment: Yup.string().oneOf(
+    ['upi', 'cash', 'net_banking'],
+    'Invalid mode of payment'
+  ),
   student_status: Yup.object({
     label: Yup.string(),
     value: Yup.string().oneOf(

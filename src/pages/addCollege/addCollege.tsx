@@ -86,7 +86,7 @@ const AddCollege: React.FC = (): React.JSX.Element => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col gap-4 rounded-lg bg-white p-2 slideIn">
+    <div className="h-full w-full flex flex-col gap-4 rounded-lg bg-white p-2 slideIn overflow-auto">
       <Formik
         initialValues={courseDetails}
         onSubmit={handleCollegeRegister}
@@ -106,7 +106,7 @@ const AddCollege: React.FC = (): React.JSX.Element => {
           handleSubmit,
         }) => (
           <form
-            className="grid md:grid-cols-2 grid-col-1 gap-4 gap-y-8 p-4"
+            className="grid lg:grid-cols-2 grid-col-1 gap-4 gap-y-8 p-4"
             onSubmit={handleSubmit}
           >
             <Input
@@ -177,7 +177,7 @@ const AddCollege: React.FC = (): React.JSX.Element => {
               onBlur={handleBlur}
             />
 
-            <div>
+            <div className="w-full">
               <label htmlFor={'brochure'} className="capitalize">
                 Brochure
               </label>
@@ -185,14 +185,14 @@ const AddCollege: React.FC = (): React.JSX.Element => {
                 type="file"
                 name={'brochure'}
                 id={'brochure'}
-                className="font-medium p-2 border-1 rounded-lg cursor-pointer text-primary flex gap-2 items-center"
+                className="font-medium p-2 border-1 rounded-lg cursor-pointer text-primary flex gap-2 items-center w-full"
                 accept=".pdf"
                 onChange={(e) => handleFileUpload(e, setFieldValue)}
                 onBlur={handleBlur}
               />
             </div>
 
-            <div className="flex items-center gap-3 col-span-2">
+            <div className="flex items-center gap-3 col-span-1 lg:col-span-2">
               <Button
                 label="Discard"
                 color="danger"

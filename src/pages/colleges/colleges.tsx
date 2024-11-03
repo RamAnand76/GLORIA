@@ -110,7 +110,25 @@ const Colleges: React.FC = () => {
     });
   };
 
-  console.log(selectedFilter);
+  const handleRowClick = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: 'Your WebApp Title',
+          text: 'Check out this link!',
+          url: window.location.href, // or a specific URL if needed
+        })
+        .then(() => console.log('Successfully shared'))
+        .catch((error) => console.error('Error sharing:', error));
+    } else {
+      navigator.clipboard
+        .writeText('https://yourapp.com')
+        .then(() => {
+          alert('Link copied to clipboard! You can paste it to share.');
+        })
+        .catch((error) => console.log('Copy failed:', error));
+    }
+  };
 
   return (
     <Fragment>
@@ -130,7 +148,7 @@ const Colleges: React.FC = () => {
           isBtnDisabled={!is_admin}
           showFilter={true}
           handleRowAction={handleStudentActions}
-          checkboxSelection={true}
+          checkboxSelection={is_admin}
           showEditBtn={is_admin}
           showDeleteBtn={is_admin}
           showEyeBtn={false}
@@ -147,6 +165,7 @@ const Colleges: React.FC = () => {
             setSelectedFilter([]);
             mutate();
           }}
+          onRowClick={handleRowClick}
         />
       </section>
       <Modals.ConfirmationModal
