@@ -6,6 +6,7 @@ import useSWR from 'swr';
 export interface AuthContextProps {
   isValidUser: boolean | null;
   isAdmin: boolean;
+  isAgent: boolean;
   isLoading: boolean;
 }
 export const authContext = createContext<AuthContextProps | null>(null);
@@ -16,7 +17,8 @@ const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [tokenData, setIsTokenData] = useState<{
     valid_token: boolean | null;
     is_admin: boolean;
-  }>({ valid_token: null, is_admin: false });
+    is_agent:boolean;
+  }>({ valid_token: null, is_admin: false , is_agent: false});
 
   const { isLoading } = useSWR(
     `${swrKeys.USER_DETAILS}`,
@@ -54,6 +56,7 @@ const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const values = {
     isValidUser: tokenData.valid_token,
     isAdmin: tokenData.is_admin,
+    isAgent: tokenData.is_agent,
     isLoading,
   };
   return (

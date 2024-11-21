@@ -9,6 +9,7 @@ interface IRegister {
   phone_number: string;
   is_admin: boolean;
   is_employee: boolean;
+  is_agent: boolean;
   work_location?: string;
 }
 interface IListTableData {
@@ -30,6 +31,7 @@ interface IEmployee {
   is_employee: boolean;
   work_location: string;
   is_admin: boolean;
+  is_agent: boolean;
 }
 interface IBulkRegister_R {
   download_link: string;
@@ -90,6 +92,7 @@ interface IUserDetails {
   id: string;
   is_admin: boolean;
   is_employee: boolean;
+  is_agent:boolean;
   last_name: string;
   phone_number: string;
   username: string;

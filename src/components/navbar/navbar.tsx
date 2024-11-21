@@ -9,7 +9,7 @@ export const Navbar: React.FC<{
   toggleNav: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ showNav, toggleNav }) => {
   const navigate = useNavigate();
-  const { isAdmin } = useAuthContext();
+  const { isAdmin, isAgent } = useAuthContext();
   const [activePath, setActivePath] = useState(
     location.pathname.split('/').filter(Boolean)[0]
   );
