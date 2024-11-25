@@ -2,13 +2,13 @@ import GetIcons from '@/assets/icons';
 import Checkbox from '@/components/checkbox';
 import Pagination from '@/components/pagination';
 import TableHeader, { TableHeaderProps } from '@/components/tableHeader';
+import useStore from '@/store/store';
 import { Avatar, Tooltip } from '@nextui-org/react';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import Switch from '../switch';
-import useStore from '@/store/store';
-
 interface TableProps<T> extends TableHeaderProps {
   id?: string;
   rows: T[];
@@ -47,7 +47,6 @@ const Table = <
   rows,
   id,
   colums,
-  selectAll,
   currentPage,
   showEditBtn = true,
   showingLimit,
@@ -73,26 +72,10 @@ const Table = <
   const { selectedRowIds, setSelectedRowIds } = useStore((state) => state);
 
   /********************************REACT-HOOKS************************************** */
-  const selectAllRef = useRef<HTMLInputElement>(null);
+
   const scrollingDiv = useRef<HTMLDivElement>(null);
   const [horizontallyScrolling, setHorizontallyScrolling] =
     useState<boolean>(false);
-  useEffect(() => {
-    if (selectAllRef.current) {
-      if (!selectAll && selectedRowIds?.length) {
-        selectAllRef.current.indeterminate = true;
-        return;
-      }
-      selectAllRef.current.indeterminate = false;
-    }
-  }, [selectedRowIds, rows]);
-
-  useEffect(() => {
-    if (selectAll && selectAllRef.current) {
-      selectAllRef.current.checked = true;
-      selectAllRef.current.indeterminate = false;
-    }
-  }, [selectAll]);
 
   /**
    * @description detects horizontal scrolling on scrollingDiv component
@@ -121,7 +104,7 @@ const Table = <
   /********************************CUSTOM METHODS************************************** */
 
   const validateChecked: (item: T) => boolean = (item) => {
-    const isChecked = selectAll || selectedRowIds.includes(item['id']);
+    const isChecked = selectedRowIds?.[currentPage]?.includes(item['id']);
     return !!isChecked;
   };
 
@@ -130,18 +113,29 @@ const Table = <
     _e: React.ChangeEvent<HTMLInputElement>,
     { id }: { id: string }
   ) => {
-    const _ids = selectedRowIds.includes(id)
-      ? selectedRowIds.filter((_id) => _id !== id)
-      : [...selectedRowIds, id];
+    const currentIds = Array.from(selectedRowIds?.[currentPage] || []);
 
-    setSelectedRowIds(_ids);
+    const _ids = currentIds?.includes(id)
+      ? currentIds?.filter((_id) => _id !== id)
+      : [...currentIds, id];
+
+    setSelectedRowIds({
+      ...selectedRowIds,
+      [currentPage]: _ids,
+    });
   };
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      setSelectedRowIds(rows?.map(({ id }) => id));
+      setSelectedRowIds({
+        ...selectedRowIds,
+        [currentPage]: rows?.map(({ id }) => id),
+      });
     } else {
-      setSelectedRowIds([]);
+      setSelectedRowIds({
+        ...selectedRowIds,
+        [currentPage]: [],
+      });
     }
   };
 
@@ -173,8 +167,9 @@ const Table = <
                     <Checkbox
                       id="selectAll"
                       onChange={handleSelectAll}
-                      checked={selectAll}
-                      ref={selectAllRef}
+                      isSelected={rows?.every(({ id }) =>
+                        selectedRowIds?.[currentPage]?.includes(id)
+                      )}
                     />
                   </th>
                 )}
@@ -259,14 +254,17 @@ const Table = <
                       key={rowIndex}
                       className={`${
                         rows.length - 1 === rowIndex && 'rounded-b-md'
-                      } h-[4.5rem] rounded-t-lg text-sm text-dark-grey font-normal hover:bg-snow-drift hover:cursor-pointer group`}
+                      } h-[4.5rem] rounded-t-lg text-sm text-dark-grey font-normal hover:bg-blue-50 hover:cursor-pointer group`}
                     >
                       {checkboxSelection && (
                         <td
-                          className={`px-3 py-2 text-left border-b border-white-smoke sticky left-0 bg-white ${
+                          className={`px-3 py-2 text-left border-b border-white-smoke sticky  left-0  ${
                             rows.length - 1 === rowIndex && 'rounded-bl-md'
                           }`}
                           style={{
+                            background: horizontallyScrolling
+                              ? 'white'
+                              : 'inherit',
                             boxShadow: horizontallyScrolling
                               ? '4px 0px 8px 0px rgba(0, 0, 0, 0.10)'
                               : 'none',

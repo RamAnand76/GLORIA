@@ -1,5 +1,10 @@
 import React, { InputHTMLAttributes, useEffect, useState } from 'react';
-import { getCountries, getCountryCallingCode } from 'react-phone-number-input';
+import {
+  getCountries,
+  getCountryCallingCode,
+  parsePhoneNumber,
+  PhoneNumber,
+} from 'react-phone-number-input';
 import en from 'react-phone-number-input/locale/en';
 import Dropdown from '../dropdown';
 import Input from '../input';
@@ -25,6 +30,7 @@ const countries: Array<TOption> = getCountries()
 interface PhoneNumberInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
+  value: string;
   isInvalid: boolean | undefined;
   handleChange: (value: string) => void;
 }
@@ -32,6 +38,7 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   label,
   error,
   disabled,
+  value,
   handleChange,
   ...rest
 }) => {
@@ -39,11 +46,17 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
    *         ReactHooks
    * *************************************************************/
   const [country, setCountry] = React.useState<string>('+91');
-  const [value, setValue] = useState<string>('');
 
   useEffect(() => {
     handleChange(country + value);
-  }, [value, country]);
+  }, [country]);
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = event.target.value;
+    if (/^-?\d*\.?\d*$/.test(inputValue)) {
+      handleChange && handleChange(`${country}${inputValue}`);
+    }
+  };
 
   return (
     <div
@@ -65,20 +78,21 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
           showLabel={false}
           containerClass="!w-20"
           isInvalid={rest.isInvalid}
+          menuClass="w-fit left-0"
           //@ts-ignore
           onSelectItem={(option) => setCountry(option.value)}
         />
 
+        {/* @ts-ignore */}
         <Input
           disabled={disabled}
-          //@ts-ignore
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={value ? parsePhoneNumber(value)?.nationalNumber : ''}
+          onChange={onChange}
           containerClass="flex-1"
           {...rest}
         />
       </div>
-      <span aria-label="error" className="text-xs text-danger h-4 px-2">
+      <span aria-label="error" className="text-xs text-danger h-4 px-2 mt-1">
         {rest.isInvalid ? error : ''}
       </span>
     </div>

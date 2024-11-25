@@ -7,7 +7,7 @@ interface CalenderProps {
 const Calender: React.FC<CalenderProps & DatePickerProps> = ({ ...props }) => {
   return (
     <div className="flex flex-col gap-1">
-      <span>{props.label}</span>
+      <span className="text-small">{props.label}</span>
       <DatePicker
         showIcon={true}
         className="bg-default-100 text-small rounded-xl !p-2 h-10 outline-none"
