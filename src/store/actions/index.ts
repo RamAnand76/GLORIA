@@ -25,7 +25,7 @@ const appStore = (
     work_location: '',
     password_changed: true,
   },
-  selectedRowIds: [],
+  selectedRowIds: {},
   courseDetails: {
     college_name: '',
     course_name: '',
@@ -36,7 +36,7 @@ const appStore = (
   setCourseDetails: (data: IAddCollege) => {
     set(() => ({ courseDetails: data }));
   },
-  setSelectedRowIds: (idObj: { [page: number]: string[] }) => {
+  setSelectedRowIds: (idObj: { [page: number | string]: string[] }) => {
     set(() => ({ selectedRowIds: idObj }));
   },
   setBulkRegisterData: (data: IBulkRegister_R) =>

@@ -1,18 +1,12 @@
 import GetIcons from '@/assets/icons';
 import Header from '@/components/header';
 import Navbar from '@/components/navbar';
-import PATH from '@/routes/paths';
-import useStore from '@/store/store';
 import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/breadcrumbs';
 import { useState } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const PrimaryLayout = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const {
-    userDetails: { password_changed },
-  } = useStore((state) => state);
 
   const path = location.pathname.split('/').filter(Boolean);
   const [showNav, setShowBtn] = useState<boolean>(false);
