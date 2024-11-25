@@ -1,9 +1,8 @@
-import React, { InputHTMLAttributes, useEffect, useState } from 'react';
+import React, { InputHTMLAttributes, useEffect } from 'react';
 import {
   getCountries,
   getCountryCallingCode,
   parsePhoneNumber,
-  PhoneNumber,
 } from 'react-phone-number-input';
 import en from 'react-phone-number-input/locale/en';
 import Dropdown from '../dropdown';

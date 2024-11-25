@@ -57,7 +57,7 @@ const Colleges: React.FC = () => {
   }, [collegeName]);
 
   const handleCollegeDelete = () => {
-    DeleteCollege(selectedRowIds)
+    DeleteCollege(Object.keys(selectedRowIds).flatMap((v) => selectedRowIds[v]))
       .then((data) => {
         notify(data.message, { type: 'success' });
       })
@@ -91,7 +91,7 @@ const Colleges: React.FC = () => {
     if (action === 'edit' && is_admin) {
       navigate(`edit-college/${rowData.id}`);
     } else if (action === 'delete') {
-      setSelectedRowIds([rowData.id]);
+      setSelectedRowIds({ page: [rowData.id] });
       setShowDeleteModal(true);
     }
   };

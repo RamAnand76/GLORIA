@@ -110,7 +110,6 @@ const AddStudents: React.FC = (): React.JSX.Element => {
             className="grid grid-cols-1 gap-4 gap-y-8 p-4 lg:grid-cols-2 overflow-auto"
             onSubmit={handleSubmit}
           >
-            {console.log({ values })}
             <Input
               label="Name*"
               name="name"
