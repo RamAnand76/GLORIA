@@ -70,7 +70,7 @@ export const DeleteEmployee = async (id: string) => {
 };
 export const EditEmployee = async (id: string, payload: IRegister) => {
   try {
-    const response = await privateAPI.post(`/admin/edit-user/${id}/`, payload);
+    const response = await privateAPI.put(`/admin/edit-user/${id}/`, payload);
     return response.data;
   } catch (error) {
     handleError(error);
