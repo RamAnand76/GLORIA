@@ -94,3 +94,15 @@ export const updateStudent = async ({
     return Promise.reject();
   }
 };
+
+export const downloadStudentPdf = async (id: string) => {
+  try {
+    const response = await privateAPI.get(`admin/students/${id}/download-pdf/`, {
+      responseType: 'blob', // Ensures the response is treated as a file
+    });
+    return response.data;
+  } catch (error) {
+    handleError(error);
+    return Promise.reject(error);
+  }
+};

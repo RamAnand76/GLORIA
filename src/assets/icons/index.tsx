@@ -9,6 +9,7 @@ import Colleges from './_college';
 import Dashboard from './_dashboard';
 import DefaultLoader from './_defaultLoader';
 import { DeleteIcon } from './_delete';
+import { DownloadIcon } from './_download';
 import DownArrow from './_dropdown';
 import { EditIcon } from './_edit';
 import Employees from './_employees';
@@ -35,6 +36,7 @@ const iconObject: { [key: string]: JSX.Element } = {
   info: <Info />,
   downArrow: <DownArrow />,
   edit: <EditIcon />,
+  download: <DownloadIcon />,
   delete: <DeleteIcon />,
   eye: <EyeIcon />,
   forward: <Forward />,
