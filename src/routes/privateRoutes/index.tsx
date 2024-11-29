@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import PATH from '../paths';
 
 const PrivateRoute = () => {
-  const { isValidUser, isAdmin } = useAuthContext();
+  const { isValidUser, isAdmin, isAgent } = useAuthContext();
   const rootPath = location?.pathname;
 
   if (isValidUser === null) {
@@ -13,6 +13,7 @@ const PrivateRoute = () => {
     return <Navigate to={'/auth'} />;
   } else if (
     !isAdmin &&
+    !isAgent &&
     [PATH.employees, PATH.addStudents].includes(rootPath)
   ) {
     window.history.back();

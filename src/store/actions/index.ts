@@ -17,6 +17,7 @@ const appStore = (
     id: '',
     is_admin: false,
     is_employee: false,
+    is_agent: false,
     last_name: '',
     phone_number: '',
     username: '',
